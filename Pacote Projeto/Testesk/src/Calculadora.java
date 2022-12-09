@@ -11,21 +11,21 @@ import java.time.temporal.ChronoUnit;
 
 public class Calculadora extends JFrame implements ActionListener {
 
-    protected Color objetos = new Color(79, 236, 255,255);
-    protected JPanel painel = new JPanel();
-    protected ImageIcon imagem = new ImageIcon("ImagemSeduc.png");
-    protected JLabel seduc = new JLabel(imagem);
-    protected JFormattedTextField DataInicial, DataFinal;
-    protected JTextField NomeIndividuo = new JTextField("");
-    protected JButton Calcular = new JButton("Calcular");
-    protected JButton Limpar = new JButton("Limpar");
-    protected JButton Novo = new JButton("Novo");
-    protected JTextArea Area = new JTextArea("");
-    protected JTextArea AreaCalculos = new JTextArea("");
-    protected JButton CalcularAreaCalculos = new JButton("Calcular");
-    protected JButton LimparAreaCalculos = new JButton("Limpar");
-    protected JScrollPane scroll = new JScrollPane(AreaCalculos);
-    protected JScrollPane scroll1 = new JScrollPane(Area);
+     Color objetos = new Color(198, 235, 255,255);
+     JPanel painel = new JPanel();
+     ImageIcon imagem = new ImageIcon("ImagemSeduc.png");
+     JLabel seduc = new JLabel(imagem);
+     JFormattedTextField DataInicial, DataFinal;
+     JTextField NomeIndividuo = new JTextField("");
+     JButton Calcular = new JButton("Calcular");
+     JButton Limpar = new JButton("Limpar");
+     JButton Novo = new JButton("Novo");
+     JTextArea Area = new JTextArea("");
+     JTextArea AreaCalculos = new JTextArea("");
+     JButton CalcularAreaCalculos = new JButton("Calcular");
+     JButton LimparAreaCalculos = new JButton("Limpar");
+     JScrollPane scroll = new JScrollPane(AreaCalculos);
+     JScrollPane scroll1 = new JScrollPane(Area);
     Period tempoDeTrabalho = Period.parse("P0Y0M0D");
     long somaDiasEntreDuasDatas = 0;
     int ordemDosPeriodos = 0;
@@ -141,9 +141,28 @@ public class Calculadora extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
 
-        if(e.getSource() == Calcular){
+        boolean datasSaoInvalidas = false;
+        String dataInicial = DataInicial.getText();
+        String dataFinal = DataFinal.getText();
+        int diaDataInicial = Integer.parseInt(dataInicial.substring(0,2));
+        int mesDataInicial = Integer.parseInt(dataInicial.substring(3,5));
+        int anoDataInicial = Integer.parseInt(dataInicial.substring(6,10));
+        int diaDataFinal = Integer.parseInt(dataFinal.substring(0,2));
+        int mesDataFinal = Integer.parseInt(dataFinal.substring(3,5));
+        int anoDataFinal = Integer.parseInt(dataFinal.substring(6,10));
+
+        if(0 >= diaDataInicial || (diaDataInicial > 31 && (mesDataInicial == 1 ||  mesDataInicial == 3 ||  mesDataInicial == 5 ||  mesDataInicial == 7 ||  mesDataInicial == 8 ||  mesDataInicial == 10 ||  mesDataInicial == 12)) || (diaDataInicial > 30 && (mesDataInicial == 2 ||  mesDataInicial == 4 ||  mesDataInicial == 6 ||  mesDataInicial == 9 ||  mesDataInicial == 11)) || (diaDataInicial > 28 && mesDataInicial == 2 && anoDataInicial%4 != 0) || (diaDataInicial > 29 && mesDataInicial == 2 && anoDataInicial%4 == 0)){
+            AreaCalculos.append("A data inicial é inválida! \n\n");
+            datasSaoInvalidas = true;
+        }
+
+        if(0 >= diaDataFinal || (diaDataFinal > 31 && (mesDataFinal == 1 ||  mesDataFinal == 3 ||  mesDataFinal == 5 ||  mesDataFinal == 7 ||  mesDataFinal == 8 ||  mesDataFinal == 10 ||  mesDataFinal == 12)) || (diaDataFinal > 30 && (mesDataFinal == 2 ||  mesDataFinal == 4 ||  mesDataFinal == 6 ||  mesDataFinal == 9 ||  mesDataFinal == 11)) || (diaDataFinal > 28 && mesDataFinal == 2 && anoDataFinal%4 != 0) || (diaDataFinal > 29 && mesDataFinal == 2 && anoDataFinal%4 == 0)){
+            AreaCalculos.append("A data final é inválida! \n\n");
+            datasSaoInvalidas = true;
+        }
+
+        if(e.getSource() == Calcular && !datasSaoInvalidas){
             CalculaTempo( AreaCalculos, DataInicial, DataFinal);
-            Calcular.setEnabled(false);
         }
         if(e.getSource() == Limpar){
             LIMPAR.limpar(NomeIndividuo, Area, DataInicial, DataFinal);
@@ -197,7 +216,6 @@ public class Calculadora extends JFrame implements ActionListener {
         localDataInicial = LocalDate.parse(DataInicial.getText(), formatoLocalDate);
         localDataFinal = LocalDate.parse(DataFinal.getText(), formatoLocalDate);
 
-
         periodoDeTrabalho = Period.between(localDataInicial, localDataFinal);
         diasEntreDuasDatas = ChronoUnit.DAYS.between(localDataInicial, localDataFinal);
 
@@ -231,8 +249,8 @@ public class Calculadora extends JFrame implements ActionListener {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-                 UnsupportedLookAndFeelException ex1) {
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex1) {
             java.util.logging.Logger.getLogger(Calculadora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex1);
         }
 
