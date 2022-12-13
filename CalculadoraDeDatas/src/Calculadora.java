@@ -8,32 +8,48 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 public class Calculadora extends JFrame implements ActionListener {
 
     Color objetos = new Color(198, 235, 255,255);
+
     JPanel painel = new JPanel();
+
     JFormattedTextField dataInicial, dataFinal;
+
     JTextField nomeIndividuo = new JTextField("");
+
     JButton calcular = new JButton("Calcular");
     JButton desfazer = new JButton("Desfazer");
     JButton limpar = new JButton("Limpar");
     JButton novo = new JButton("Novo");
-    JTextArea area = new JTextArea("");
-    JTextArea areaCalculos = new JTextArea("");
     JButton calcularAreaCalculos = new JButton("Calcular");
     JButton salvar = new JButton("Salvar");
     JButton imprimir = new JButton("Imprimir");
     JButton limparAreaCalculos = new JButton("Limpar");
+
+    JTextArea area = new JTextArea("");
+    JTextArea areaCalculos = new JTextArea("");
+
     JScrollPane scroll = new JScrollPane(areaCalculos);
     JScrollPane scroll1 = new JScrollPane(area);
+
     Period tempoDeTrabalho = Period.parse("P0Y0M0D");
-    long somaDiasEntreDuasDatas = 0;
-    int ordemDosPeriodos = 0;
-    DateTimeFormatter formatoLocalDate;
-    LocalDate localDataInicial, localDataFinal;
     Period periodoDeTrabalho;
-    long diasEntreDuasDatas = 0;
+
+    DateTimeFormatter formatoDosLocalDates = DateTimeFormatter.ofPattern("dd/MM/yyyy");;
+    LocalDate localDataInicial, localDataFinal;
+
+    long somaDiasEntreDuasDatas = 0, diasEntreDuasDatas = 0;
+    int ordemDosPeriodos = 0;
+
+    ArrayList <Period> listDoPeriodoDeTrabalho = new ArrayList<>();
+    ArrayList <Period> listDoTempoDeTrabalho = new ArrayList<>();
+    ArrayList <LocalDate> listDeLocalDatasFinais = new ArrayList<>();
+    ArrayList <String> listDeStringsDosDiasEntreDuasDatas = new ArrayList<>();
+    ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas = new ArrayList<>();
+    ArrayList <String> listDeStringsDasOrdensDosPeriodos = new ArrayList<>();
 
     protected Calculadora (){
 
@@ -181,12 +197,13 @@ public class Calculadora extends JFrame implements ActionListener {
                 }
             }
             catch (Exception ex){
-                areaCalculos.append("Ocorreu o erro: " + (ex) + " Por favor, verifique se as datas estão corretas.");
+                areaCalculos.append("Ocorreu o erro: " + (ex) + " Por favor, verifique se as datas estão corretas. \n\n");
             }
         }
 
         if(e.getSource() == desfazer){
-            Textos.desfazer();
+            desfazerCalculos();
+            Textos.desfazerTextos();
         }
 
         if(e.getSource() == limpar){
@@ -198,7 +215,7 @@ public class Calculadora extends JFrame implements ActionListener {
         }
 
         if(e.getSource() == calcularAreaCalculos){
-            MostraCalculoFinal(areaCalculos);
+            Textos.MostraCalculoFinal(areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas);
         }
 
         if(e.getSource() == salvar) Textos.salvarCalculos(nomeIndividuo, areaCalculos);
@@ -254,17 +271,24 @@ public class Calculadora extends JFrame implements ActionListener {
 
     protected void CalculaTempo(JTextArea areaCalculos, JTextField dataInicial, JTextField dataFinal){
 
-        formatoLocalDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        localDataInicial = LocalDate.parse(dataInicial.getText(), formatoLocalDate);
-        localDataFinal = LocalDate.parse(dataFinal.getText(), formatoLocalDate);
+        localDataInicial = LocalDate.parse(dataInicial.getText(), formatoDosLocalDates);
+        localDataFinal = LocalDate.parse(dataFinal.getText(), formatoDosLocalDates);
+        listDeLocalDatasFinais.add(localDataFinal);
 
         periodoDeTrabalho = Period.between(localDataInicial, localDataFinal);
+        listDoPeriodoDeTrabalho.add(periodoDeTrabalho);
+
         diasEntreDuasDatas = ChronoUnit.DAYS.between(localDataInicial, localDataFinal);
+        listDeStringsDosDiasEntreDuasDatas.add(String.valueOf(diasEntreDuasDatas));
 
         tempoDeTrabalho = tempoDeTrabalho.plus(periodoDeTrabalho);
-        somaDiasEntreDuasDatas = somaDiasEntreDuasDatas + diasEntreDuasDatas;
         tempoDeTrabalho = tempoDeTrabalho.normalized();
-        ++ordemDosPeriodos;
+        listDoTempoDeTrabalho.add(tempoDeTrabalho);
+
+        somaDiasEntreDuasDatas = somaDiasEntreDuasDatas + diasEntreDuasDatas;
+        listDeStringsDasSomasDiasEntreDuasDatas.add(String.valueOf(somaDiasEntreDuasDatas));
+
+        listDeStringsDasOrdensDosPeriodos.add(String.valueOf(++ordemDosPeriodos));
 
         areaCalculos.append(ordemDosPeriodos + "° Periodo" +
                 "\n" + "De " + localDataInicial.getDayOfMonth() + "/" + localDataInicial.getMonthValue()+ "/" + localDataInicial.getYear() + " até " +
@@ -274,9 +298,8 @@ public class Calculadora extends JFrame implements ActionListener {
         Textos.limpar(this.dataInicial, this.dataFinal);
     }
 
-    protected void MostraCalculoFinal(JTextArea AreaCalculos){
-        AreaCalculos.append("Tempo total de trabalho: " + tempoDeTrabalho.getYears() + " Anos " + tempoDeTrabalho.getMonths() + " Meses e " + tempoDeTrabalho.getDays() + " Dias"
-                + "\n" + "Tempo total em Dias: " + somaDiasEntreDuasDatas + "\n\n");
+    public void desfazerCalculos(){
+
     }
 
     public static void main(String[] args) {

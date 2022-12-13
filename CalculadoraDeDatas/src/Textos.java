@@ -2,10 +2,11 @@ import javax.print.*;
 import javax.print.attribute.*;
 import javax.swing.*;
 import java.io.*;
+import java.time.Period;
 
 public class Textos {
 
-    public static void limpar(JTextField nomeIndividuo, JTextArea area, JFormattedTextField dataInicial, JFormattedTextField dataFinal){
+    protected static void limpar(JTextField nomeIndividuo, JTextArea area, JFormattedTextField dataInicial, JFormattedTextField dataFinal){
 
         nomeIndividuo.setText("");
         dataInicial.setText("");
@@ -15,7 +16,7 @@ public class Textos {
         area.setText("");
     }
 
-    public static void limpar(JFormattedTextField dataInicial, JFormattedTextField dataFinal){
+    protected static void limpar(JFormattedTextField dataInicial, JFormattedTextField dataFinal){
 
         dataInicial.setText("");
         dataInicial.setValue("");
@@ -23,11 +24,12 @@ public class Textos {
         dataFinal.setValue("");
     }
 
-    public static void limparAreaCalculos(JTextArea areaCalculos){
-        areaCalculos.setText("");
+    protected static void MostraCalculoFinal(JTextArea AreaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas){
+        AreaCalculos.append("Tempo total de trabalho: " + tempoDeTrabalho.getYears() + " Anos " + tempoDeTrabalho.getMonths() + " Meses e " + tempoDeTrabalho.getDays() + " Dias"
+                + "\n" + "Tempo total em Dias: " + somaDiasEntreDuasDatas + "\n\n");
     }
 
-    public static void salvarCalculos(JTextField nomeIndividuo, JTextArea areaCalculos){
+    protected static void salvarCalculos(JTextField nomeIndividuo, JTextArea areaCalculos){
 
         try {
             File arquivoQueSeraSalvo;
@@ -55,7 +57,7 @@ public class Textos {
     }
 
     // Ver questão do arquivo em branco que a impressora faz && ver ProcessStartInfo parece interessante para pegar funções do Windows //
-    public static void imprimirCalculos(JTextField nomeIndividuo, JTextArea areaCalculos){
+    protected static void imprimirCalculos(JTextField nomeIndividuo, JTextArea areaCalculos){
         try {
 
             // O documento temporário é criado//
@@ -111,7 +113,11 @@ public class Textos {
         }
     }
 
-    public static void desfazer(){
+    protected static void limparAreaCalculos(JTextArea areaCalculos){
+        areaCalculos.setText("");
+    }
+
+    protected static void desfazerTextos(){
 
     }
 }
