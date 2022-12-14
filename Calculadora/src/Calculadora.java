@@ -44,9 +44,12 @@ public class Calculadora extends JFrame implements ActionListener {
     long somaDiasEntreDuasDatas = 0, diasEntreDuasDatas = 0;
     int ordemDosPeriodos = 0;
 
+    String textoQueSeraAdicionadoNoTextArea;
+
     ArrayList <Period> listDoTempoDeTrabalho = new ArrayList<>();
     ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas = new ArrayList<>();
     ArrayList <String> listDosTextosQueSeraoAdicionadosNoTextArea = new ArrayList<>();
+    ArrayList <String> listDosTextosDoMostrarCalculoFinal = new ArrayList<>();
 
     protected Calculadora (){
 
@@ -212,13 +215,13 @@ public class Calculadora extends JFrame implements ActionListener {
         }
 
         if(e.getSource() == calcularAreaCalculos){
-            Textos.MostraCalculoFinal(areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas);
+            Textos.MostraCalculoFinal(areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
         }
 
-        if(e.getSource() == salvar) Textos.salvarCalculos(nomeIndividuo, areaCalculos);
+        if(e.getSource() == salvar) Textos.salvarCalculos(nomeIndividuo, areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
 
         if(e.getSource() == imprimir){
-            Textos.imprimirCalculos(nomeIndividuo, areaCalculos);
+            Textos.imprimirCalculos(nomeIndividuo, areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
         }
 
         if(e.getSource() == limparAreaCalculos){
@@ -286,7 +289,7 @@ public class Calculadora extends JFrame implements ActionListener {
 
         ++ordemDosPeriodos;
 
-        String textoQueSeraAdicionadoNoTextArea = ordemDosPeriodos + "° Periodo" +
+        textoQueSeraAdicionadoNoTextArea = ordemDosPeriodos + "° Periodo" +
                 "\n" + "De " + localDataInicial.getDayOfMonth() + "/" + localDataInicial.getMonthValue()+ "/" + localDataInicial.getYear() + " até " +
                 localDataFinal.getDayOfMonth() + "/" + localDataFinal.getMonthValue() + "/" + localDataFinal.getYear() +
                 "\n" + "Duração: " +periodoDeTrabalho.getYears() + " Anos " +  periodoDeTrabalho.getMonths() + " Meses " + periodoDeTrabalho.getDays() + " e Dias" +

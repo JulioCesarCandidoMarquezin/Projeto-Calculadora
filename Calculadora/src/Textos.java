@@ -25,16 +25,29 @@ public class Textos   {
         dataFinal.setValue("");
     }
 
-    protected static void MostraCalculoFinal(JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas){
+    protected static void MostraCalculoFinal(JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
         if(!tempoDeTrabalho.isZero() && somaDiasEntreDuasDatas != 0){
-            areaCalculos.append("Tempo total de trabalho: " + tempoDeTrabalho.getYears() + " Anos " + tempoDeTrabalho.getMonths() + " Meses e " + tempoDeTrabalho.getDays() + " Dias"
-                    + "\n" + "Tempo total em Dias: " + somaDiasEntreDuasDatas + "\n\n");
+            String textoQueSeraAdicionadoNoTextArea = "Tempo total de trabalho: " + tempoDeTrabalho.getYears() + " Anos " + tempoDeTrabalho.getMonths() + " Meses e " + tempoDeTrabalho.getDays() + " Dias"
+                    + "\n" + "Tempo total em Dias: " + somaDiasEntreDuasDatas + "\n\n";
+            areaCalculos.append(textoQueSeraAdicionadoNoTextArea);
+            listDosTextosDoMostrarCalculoFinal.add(textoQueSeraAdicionadoNoTextArea);
         }
     }
 
-    protected static void salvarCalculos(JTextField nomeIndividuo, JTextArea areaCalculos){
+    public static void removerCalculosFinais(JTextArea areaCalculos, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
+        while(listDosTextosDoMostrarCalculoFinal.size() > 0){
+            String textoQueSeraTiradoDoTextArea = listDosTextosDoMostrarCalculoFinal.remove(listDosTextosDoMostrarCalculoFinal.size() - 1);
+            String novoTextoDoTextArea = areaCalculos.getText().replace(textoQueSeraTiradoDoTextArea, "");
+            areaCalculos.setText(novoTextoDoTextArea);
+        }
+    }
+
+    protected static void salvarCalculos(JTextField nomeIndividuo, JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
 
         try {
+            removerCalculosFinais(areaCalculos, listDosTextosDoMostrarCalculoFinal);
+            MostraCalculoFinal(areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
+
             File arquivoQueSeraSalvo;
             if(nomeIndividuo.getText().equals("")){
                 arquivoQueSeraSalvo = new File("Arquivo.txt");
@@ -61,8 +74,11 @@ public class Textos   {
     }
 
     // Ver questão do arquivo em branco que a impressora faz && ver ProcessStartInfo parece interessante para pegar funções do Windows //
-    protected static void imprimirCalculos(JTextField nomeIndividuo, JTextArea areaCalculos){
+    protected static void imprimirCalculos(JTextField nomeIndividuo, JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
         try {
+
+            removerCalculosFinais(areaCalculos, listDosTextosDoMostrarCalculoFinal);
+            MostraCalculoFinal(areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
 
             // O documento temporário é criado//
             File arquivoTemporarioQueSeraImpresso;
