@@ -172,33 +172,11 @@ public class Calculadora extends JFrame implements ActionListener {
 
         if(e.getSource() == calcular && dataInicial.getValue() != null && dataInicial.getValue() != "" && dataFinal.getValue() != null && dataFinal.getValue() != ""){
 
-            try {
-                boolean datasSaoInvalidas = false;
-                String textoDataInicial = dataInicial.getText();
-                String textoDataFinal = dataFinal.getText();
-
-                int diaDataInicial = Integer.parseInt(textoDataInicial.substring(0, 2));
-                int mesDataInicial = Integer.parseInt(textoDataInicial.substring(3, 5));
-                int anoDataInicial = Integer.parseInt(textoDataInicial.substring(6, 10));
-                int diaDataFinal = Integer.parseInt(textoDataFinal.substring(0, 2));
-                int mesDataFinal = Integer.parseInt(textoDataFinal.substring(3, 5));
-                int anoDataFinal = Integer.parseInt(textoDataFinal.substring(6, 10));
-
-                if (0 >= diaDataInicial || (diaDataInicial > 31 && (mesDataInicial == 1 || mesDataInicial == 3 || mesDataInicial == 5 || mesDataInicial == 7 || mesDataInicial == 8 || mesDataInicial == 10 || mesDataInicial == 12)) || (diaDataInicial > 30 && (mesDataInicial == 2 || mesDataInicial == 4 || mesDataInicial == 6 || mesDataInicial == 9 || mesDataInicial == 11)) || (diaDataInicial > 28 && mesDataInicial == 2 && anoDataInicial % 4 != 0) || (diaDataInicial > 29 && mesDataInicial == 2 && anoDataInicial % 4 == 0)) {
-                    areaCalculos.append("A data inicial é inválida! \n\n");
-                    datasSaoInvalidas = true;
-                }
-                if (0 >= diaDataFinal || (diaDataFinal > 31 && (mesDataFinal == 1 || mesDataFinal == 3 || mesDataFinal == 5 || mesDataFinal == 7 || mesDataFinal == 8 || mesDataFinal == 10 || mesDataFinal == 12)) || (diaDataFinal > 30 && (mesDataFinal == 2 || mesDataFinal == 4 || mesDataFinal == 6 || mesDataFinal == 9 || mesDataFinal == 11)) || (diaDataFinal > 28 && mesDataFinal == 2 && anoDataFinal % 4 != 0) || (diaDataFinal > 29 && mesDataFinal == 2 && anoDataFinal % 4 == 0)) {
-                    areaCalculos.append("A data final é inválida! \n\n");
-                    datasSaoInvalidas = true;
-                }
-                if (!datasSaoInvalidas) {
-                    CalculaTempo(areaCalculos, dataInicial, dataFinal);
-                }
+            boolean datasSaoInvalidas = datasSaoInvalidas();
+            if (!datasSaoInvalidas) {
+                CalculaTempo(areaCalculos, dataInicial, dataFinal);
             }
-            catch (Exception ex){
-                areaCalculos.append("Ocorreu o erro: " + (ex) + " Por favor, verifique se as datas estão corretas. \n\n");
-            }
+
         }
 
         if(e.getSource() == desfazer){
@@ -228,6 +206,34 @@ public class Calculadora extends JFrame implements ActionListener {
             Textos.limparAreaCalculos(areaCalculos, listDosTextosQueSeraoAdicionadosNoTextArea, listDoTempoDeTrabalho, listDeStringsDasSomasDiasEntreDuasDatas);
             limparCalculos();
         }
+    }
+
+    private boolean datasSaoInvalidas(){
+
+        try {
+            String textoDataInicial = dataInicial.getText();
+            String textoDataFinal = dataFinal.getText();
+
+            int diaDataInicial = Integer.parseInt(textoDataInicial.substring(0, 2));
+            int mesDataInicial = Integer.parseInt(textoDataInicial.substring(3, 5));
+            int anoDataInicial = Integer.parseInt(textoDataInicial.substring(6, 10));
+            int diaDataFinal = Integer.parseInt(textoDataFinal.substring(0, 2));
+            int mesDataFinal = Integer.parseInt(textoDataFinal.substring(3, 5));
+            int anoDataFinal = Integer.parseInt(textoDataFinal.substring(6, 10));
+
+            if (0 >= diaDataInicial || (diaDataInicial > 31 && (mesDataInicial == 1 || mesDataInicial == 3 || mesDataInicial == 5 || mesDataInicial == 7 || mesDataInicial == 8 || mesDataInicial == 10 || mesDataInicial == 12)) || (diaDataInicial > 30 && (mesDataInicial == 2 || mesDataInicial == 4 || mesDataInicial == 6 || mesDataInicial == 9 || mesDataInicial == 11)) || (diaDataInicial > 28 && mesDataInicial == 2 && anoDataInicial % 4 != 0) || (diaDataInicial > 29 && mesDataInicial == 2 && anoDataInicial % 4 == 0)) {
+                areaCalculos.append("A data inicial é inválida! \n\n");
+                return true;
+            }
+            if (0 >= diaDataFinal || (diaDataFinal > 31 && (mesDataFinal == 1 || mesDataFinal == 3 || mesDataFinal == 5 || mesDataFinal == 7 || mesDataFinal == 8 || mesDataFinal == 10 || mesDataFinal == 12)) || (diaDataFinal > 30 && (mesDataFinal == 2 || mesDataFinal == 4 || mesDataFinal == 6 || mesDataFinal == 9 || mesDataFinal == 11)) || (diaDataFinal > 28 && mesDataFinal == 2 && anoDataFinal % 4 != 0) || (diaDataFinal > 29 && mesDataFinal == 2 && anoDataFinal % 4 == 0)) {
+                areaCalculos.append("A data final é inválida! \n\n");
+                return true;
+            }
+        }
+        catch (Exception ex){
+            areaCalculos.append("Ocorreu o erro: " + (ex) + " Por favor, verifique se as datas estão corretas. \n\n");
+        }
+        return false;
     }
 
     private MouseAdapter getMouseEvent() {
@@ -302,7 +308,7 @@ public class Calculadora extends JFrame implements ActionListener {
 
     }
 
-    public void desfazerCalculos(ArrayList <Period> listDoTempoDeTrabalho, ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas){
+    private void desfazerCalculos(ArrayList <Period> listDoTempoDeTrabalho, ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas){
 
         int ultimaPosicaoDasLists = listDeStringsDasSomasDiasEntreDuasDatas.size() - 1;
 
@@ -332,7 +338,7 @@ public class Calculadora extends JFrame implements ActionListener {
 
     }
 
-    public void limparCalculos(){
+    private void limparCalculos(){
         tempoDeTrabalho = Period.parse("P0Y0M0D");
         periodoDeTrabalho = Period.parse("P0Y0M0D");
         somaDiasEntreDuasDatas = 0;

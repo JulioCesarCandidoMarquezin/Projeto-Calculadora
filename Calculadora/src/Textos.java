@@ -34,7 +34,7 @@ public class Textos   {
         }
     }
 
-    public static void removerCalculosFinais(JTextArea areaCalculos, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
+    protected static void removerCalculosFinais(JTextArea areaCalculos, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
         while(listDosTextosDoMostrarCalculoFinal.size() > 0){
             String textoQueSeraTiradoDoTextArea = listDosTextosDoMostrarCalculoFinal.remove(listDosTextosDoMostrarCalculoFinal.size() - 1);
             String novoTextoDoTextArea = areaCalculos.getText().replace(textoQueSeraTiradoDoTextArea, "");
