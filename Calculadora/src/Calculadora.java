@@ -38,18 +38,14 @@ public class Calculadora extends JFrame implements ActionListener {
     Period tempoDeTrabalho = Period.parse("P0Y0M0D");
     Period periodoDeTrabalho;
 
-    DateTimeFormatter formatoDosLocalDates = DateTimeFormatter.ofPattern("dd/MM/yyyy");;
-    LocalDate localDataInicial, localDataFinal;
+    DateTimeFormatter formatoDosLocalDates = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    LocalDate localDataInicial, localDataFinal, localDataFinalSomadoComTempoDeTrabalho;
 
     long somaDiasEntreDuasDatas = 0, diasEntreDuasDatas = 0;
     int ordemDosPeriodos = 0;
 
-    ArrayList <Period> listDoPeriodoDeTrabalho = new ArrayList<>();
     ArrayList <Period> listDoTempoDeTrabalho = new ArrayList<>();
-    ArrayList <LocalDate> listDeLocalDatasFinais = new ArrayList<>();
-    ArrayList <String> listDeStringsDosDiasEntreDuasDatas = new ArrayList<>();
     ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas = new ArrayList<>();
-    ArrayList <String> listDeStringsDasOrdensDosPeriodos = new ArrayList<>();
 
     protected Calculadora (){
 
@@ -170,7 +166,7 @@ public class Calculadora extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
 
-        if(e.getSource() == calcular && dataInicial.getValue() != null && dataFinal.getValue() != null){
+        if(e.getSource() == calcular && dataInicial.getValue() != null && dataInicial.getValue() != "" && dataFinal.getValue() != null && dataFinal.getValue() != ""){
 
             try {
                 boolean datasSaoInvalidas = false;
@@ -202,7 +198,7 @@ public class Calculadora extends JFrame implements ActionListener {
         }
 
         if(e.getSource() == desfazer){
-            desfazerCalculos(listDoPeriodoDeTrabalho, listDoTempoDeTrabalho, listDeLocalDatasFinais, listDeStringsDosDiasEntreDuasDatas, listDeStringsDasSomasDiasEntreDuasDatas, listDeStringsDasOrdensDosPeriodos);
+            desfazerCalculos( listDoTempoDeTrabalho, listDeStringsDasSomasDiasEntreDuasDatas);
             Textos.desfazerTextos();
         }
 
@@ -273,22 +269,20 @@ public class Calculadora extends JFrame implements ActionListener {
 
         localDataInicial = LocalDate.parse(dataInicial.getText(), formatoDosLocalDates);
         localDataFinal = LocalDate.parse(dataFinal.getText(), formatoDosLocalDates);
-        listDeLocalDatasFinais.add(localDataFinal);
+        localDataFinalSomadoComTempoDeTrabalho = localDataFinal.plus(tempoDeTrabalho);
 
         periodoDeTrabalho = Period.between(localDataInicial, localDataFinal);
-        listDoPeriodoDeTrabalho.add(periodoDeTrabalho);
 
         diasEntreDuasDatas = ChronoUnit.DAYS.between(localDataInicial, localDataFinal);
-        listDeStringsDosDiasEntreDuasDatas.add(String.valueOf(diasEntreDuasDatas));
 
-        tempoDeTrabalho = tempoDeTrabalho.plus(periodoDeTrabalho);
+        tempoDeTrabalho = Period.between(localDataInicial, localDataFinalSomadoComTempoDeTrabalho);
         tempoDeTrabalho = tempoDeTrabalho.normalized();
         listDoTempoDeTrabalho.add(tempoDeTrabalho);
 
         somaDiasEntreDuasDatas = somaDiasEntreDuasDatas + diasEntreDuasDatas;
         listDeStringsDasSomasDiasEntreDuasDatas.add(String.valueOf(somaDiasEntreDuasDatas));
 
-        listDeStringsDasOrdensDosPeriodos.add(String.valueOf(++ordemDosPeriodos));
+        ++ordemDosPeriodos;
 
         areaCalculos.append(ordemDosPeriodos + "° Periodo" +
                 "\n" + "De " + localDataInicial.getDayOfMonth() + "/" + localDataInicial.getMonthValue()+ "/" + localDataInicial.getYear() + " até " +
@@ -296,9 +290,36 @@ public class Calculadora extends JFrame implements ActionListener {
                 "\n" + "Duração: " +periodoDeTrabalho.getYears() + " Anos " +  periodoDeTrabalho.getMonths() + " Meses " + periodoDeTrabalho.getDays() + " e Dias" +
                 "\n" + "Duração em Dias: " + diasEntreDuasDatas + "\n \n");
         Textos.limpar(this.dataInicial, this.dataFinal);
+
     }
 
-    public void desfazerCalculos(ArrayList <Period> listDoPeriodoDeTrabalho, ArrayList <Period> listDoTempoDeTrabalho, ArrayList <LocalDate> listDeLocalDatasFinais, ArrayList <String> listDeStringsDosDiasEntreDuasDatas, ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas, ArrayList <String> listDeStringsDasOrdensDosPeriodos){
+    public void desfazerCalculos(ArrayList <Period> listDoTempoDeTrabalho, ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas){
+
+        int ultimaPosicaoDasLists = listDeStringsDasSomasDiasEntreDuasDatas.size() - 1;
+
+        if(listDeStringsDasSomasDiasEntreDuasDatas.size() > 0){
+            if(ultimaPosicaoDasLists > 0){
+                somaDiasEntreDuasDatas = Long.parseLong(listDeStringsDasSomasDiasEntreDuasDatas.get(ultimaPosicaoDasLists));
+            }
+            else{
+                somaDiasEntreDuasDatas = 0;
+            }
+            listDeStringsDasSomasDiasEntreDuasDatas.remove(ultimaPosicaoDasLists);
+        }
+
+        if(listDoTempoDeTrabalho.size() > 0){
+            if(ultimaPosicaoDasLists > 0){
+                tempoDeTrabalho = listDoTempoDeTrabalho.get(ultimaPosicaoDasLists);
+            }
+            else{
+                tempoDeTrabalho = Period.parse("P0Y0M0D");
+            }
+            listDoTempoDeTrabalho.remove(ultimaPosicaoDasLists);
+        }
+
+        if(ordemDosPeriodos > 0){
+            --ordemDosPeriodos;
+        }
 
     }
 
