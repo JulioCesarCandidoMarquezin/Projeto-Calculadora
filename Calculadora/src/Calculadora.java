@@ -1,5 +1,5 @@
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.*;
@@ -45,9 +45,13 @@ public class Calculadora extends JFrame implements ActionListener {
 
     protected Calculadora (){
 
+        // Terminar as bordas //
+
         try{
 
             Color objetos = new Color(198, 235, 255,255);
+            LineBorder bordas = (LineBorder) BorderFactory.createLineBorder(objetos, 5, false);
+
             ImageIcon seduc = new ImageIcon("seduc.png");
             JLabel imagemSeduc = new JLabel(seduc);
             setIconImage(Toolkit.getDefaultToolkit().getImage("rondonia.png"));
@@ -61,39 +65,31 @@ public class Calculadora extends JFrame implements ActionListener {
             dataInicial = new JFormattedTextField(new MaskFormatter("##/##/####"));
             dataFinal = new JFormattedTextField(new MaskFormatter("##/##/####"));
 
-            TitledBorder titulo_Nome_Individuo = BorderFactory.createTitledBorder( "Nome");
-            titulo_Nome_Individuo.setTitleJustification(TitledBorder.CENTER);
-            nomeIndividuo.setBorder(titulo_Nome_Individuo);
-            nomeIndividuo.setBounds(0, 70, 325, 55);
-            nomeIndividuo.setBackground(objetos);
+            nomeIndividuo.setBorder(bordas);
+            nomeIndividuo.setBounds(0, 70, 325, 40);
             nomeIndividuo.setToolTipText("Nome da pessoa ao qual está lidando, serve para se organizar caso esteja lidando com multiplas pessoas ao mesmo tempo.");
             nomeIndividuo.setFont(fonte);
 
-            TitledBorder titulo_Data_Inicial = BorderFactory.createTitledBorder("Data Inicial");
-            titulo_Data_Inicial.setTitleJustification(TitledBorder.CENTER);
-            dataInicial.setBorder(titulo_Data_Inicial);
-            dataInicial.setBounds(0, 130, 160, 55);
-            dataInicial.setBackground(objetos);
+            dataInicial.setBorder(bordas);
+            dataInicial.setBounds(0, 130, 160, 40);
             dataInicial.setToolTipText("Data inicial de um periodo.");
             dataInicial.setFont(fonte);
 
-            TitledBorder titulo_Data_Final = BorderFactory.createTitledBorder("Data Final");
-            titulo_Data_Final.setTitleJustification(TitledBorder.CENTER);
-            dataFinal.setBorder(titulo_Data_Final);
-            dataFinal.setBounds(165, 130, 160, 55);
-            dataFinal.setBackground(objetos);
+            dataFinal.setBorder(bordas);
+            dataFinal.setBounds(165, 130, 160, 40);
+
             dataFinal.setToolTipText("Data final de um periodo.");
             dataFinal.setFont(fonte);
 
-            calcular.setBounds(2, 195, 80, 40);
+            calcular.setBounds(0, 195, 80, 40);
             calcular.addActionListener(this);
 
-            desfazer.setBounds(82, 195, 80, 40);
+            desfazer.setBounds(80, 195, 80, 40);
             desfazer.addActionListener(this);
             desfazer.addMouseListener(getMouseEvent());
             desfazer.getCursor();
 
-            limpar.setBounds(162, 195, 80, 40);
+            limpar.setBounds(160, 195, 80, 40);
             limpar.addActionListener(this);
             limpar.addMouseListener(getMouseEvent());
             limpar.getCursor();
@@ -103,29 +99,23 @@ public class Calculadora extends JFrame implements ActionListener {
             novo.addActionListener(this);
             novo.setToolTipText("Cria uma nova guia.");
 
-            TitledBorder titulo_Area = BorderFactory.createTitledBorder("Anotações");
-            titulo_Area.setTitleJustification(TitledBorder.CENTER);
-            area.setBorder(titulo_Area);
             area.setLineWrap(true);
             area.setWrapStyleWord(true);
-            area.setBackground(objetos);
             area.setFont(fonte);
 
             scrollDasAnotacoes.setBounds(0, 240, 325, 200);
             scrollDasAnotacoes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollDasAnotacoes.setBorder(bordas);
 
-            TitledBorder titulo_Area_Calculos = BorderFactory.createTitledBorder("Calculos");
-            titulo_Area_Calculos.setTitleJustification(TitledBorder.CENTER);
-            areaCalculos.setBorder(titulo_Area_Calculos);
             areaCalculos.setLineWrap(true);
             areaCalculos.setWrapStyleWord(true);
             areaCalculos.setEditable(false);
             areaCalculos.setText("");
-            areaCalculos.setBackground(objetos);
             areaCalculos.setFont(fonte);
 
             scrollDoAreaCalculos.setBounds(330, 0, 325, 400);
             scrollDoAreaCalculos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollDoAreaCalculos.setBorder(bordas);
 
             calcularAreaCalculos.setBounds(330, 400, 80, 40);
             calcularAreaCalculos.addActionListener(this);
