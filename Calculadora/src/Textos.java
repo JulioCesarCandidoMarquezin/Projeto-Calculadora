@@ -3,9 +3,9 @@ import javax.print.attribute.*;
 import javax.swing.*;
 import java.io.*;
 import java.time.Period;
+import java.util.ArrayList;
 
 public class Textos   {
-
     protected static void limpar(JTextField nomeIndividuo, JTextArea area, JFormattedTextField dataInicial, JFormattedTextField dataFinal){
 
         nomeIndividuo.setText("");
@@ -24,8 +24,8 @@ public class Textos   {
         dataFinal.setValue("");
     }
 
-    protected static void MostraCalculoFinal(JTextArea AreaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas){
-        AreaCalculos.append("Tempo total de trabalho: " + tempoDeTrabalho.getYears() + " Anos " + tempoDeTrabalho.getMonths() + " Meses e " + tempoDeTrabalho.getDays() + " Dias"
+    protected static void MostraCalculoFinal(JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas){
+        areaCalculos.append("Tempo total de trabalho: " + tempoDeTrabalho.getYears() + " Anos " + tempoDeTrabalho.getMonths() + " Meses e " + tempoDeTrabalho.getDays() + " Dias"
                 + "\n" + "Tempo total em Dias: " + somaDiasEntreDuasDatas + "\n\n");
     }
 
@@ -39,8 +39,6 @@ public class Textos   {
             else{
                 arquivoQueSeraSalvo = new File(nomeIndividuo.getText() + ".txt");
             }
-
-
 
             JFileChooser escolhedorDoArquivoQueSeraSalvo = new JFileChooser();
             escolhedorDoArquivoQueSeraSalvo.setSelectedFile(arquivoQueSeraSalvo);
@@ -120,7 +118,13 @@ public class Textos   {
         areaCalculos.setText("");
     }
 
-    protected static void desfazerTextos(){
+    protected static void desfazerTextos(JTextArea areaCalculos, ArrayList <String> listDosTextosQueSeraoAdicionadosNoTextArea){
 
+        int ultimaStringDaList = listDosTextosQueSeraoAdicionadosNoTextArea.size() -1;
+        if (listDosTextosQueSeraoAdicionadosNoTextArea.size() > 0){
+            String textoQueSeraTiradoDoTextArea = listDosTextosQueSeraoAdicionadosNoTextArea.remove(ultimaStringDaList);
+            String novoTextoDoTextArea = areaCalculos.getText().replace(textoQueSeraTiradoDoTextArea, "");
+            areaCalculos.setText(novoTextoDoTextArea);
+        }
     }
 }

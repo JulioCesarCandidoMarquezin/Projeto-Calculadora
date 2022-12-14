@@ -46,6 +46,7 @@ public class Calculadora extends JFrame implements ActionListener {
 
     ArrayList <Period> listDoTempoDeTrabalho = new ArrayList<>();
     ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas = new ArrayList<>();
+    ArrayList <String> listDosTextosQueSeraoAdicionadosNoTextArea = new ArrayList<>();
 
     protected Calculadora (){
 
@@ -199,7 +200,7 @@ public class Calculadora extends JFrame implements ActionListener {
 
         if(e.getSource() == desfazer){
             desfazerCalculos( listDoTempoDeTrabalho, listDeStringsDasSomasDiasEntreDuasDatas);
-            Textos.desfazerTextos();
+            Textos.desfazerTextos(areaCalculos, listDosTextosQueSeraoAdicionadosNoTextArea);
         }
 
         if(e.getSource() == limpar){
@@ -284,11 +285,15 @@ public class Calculadora extends JFrame implements ActionListener {
 
         ++ordemDosPeriodos;
 
-        areaCalculos.append(ordemDosPeriodos + "° Periodo" +
+        String textoQueSeraAdicionadoNoTextArea = ordemDosPeriodos + "° Periodo" +
                 "\n" + "De " + localDataInicial.getDayOfMonth() + "/" + localDataInicial.getMonthValue()+ "/" + localDataInicial.getYear() + " até " +
                 localDataFinal.getDayOfMonth() + "/" + localDataFinal.getMonthValue() + "/" + localDataFinal.getYear() +
                 "\n" + "Duração: " +periodoDeTrabalho.getYears() + " Anos " +  periodoDeTrabalho.getMonths() + " Meses " + periodoDeTrabalho.getDays() + " e Dias" +
-                "\n" + "Duração em Dias: " + diasEntreDuasDatas + "\n \n");
+                "\n" + "Duração em Dias: " + diasEntreDuasDatas + "\n \n";
+
+        listDosTextosQueSeraoAdicionadosNoTextArea.add(textoQueSeraAdicionadoNoTextArea);
+
+        areaCalculos.append(textoQueSeraAdicionadoNoTextArea);
         Textos.limpar(this.dataInicial, this.dataFinal);
 
     }
