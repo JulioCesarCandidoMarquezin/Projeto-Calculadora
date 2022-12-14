@@ -222,7 +222,8 @@ public class Calculadora extends JFrame implements ActionListener {
         }
 
         if(e.getSource() == limparAreaCalculos){
-            Textos.limparAreaCalculos(areaCalculos);
+            Textos.limparAreaCalculos(areaCalculos, listDosTextosQueSeraoAdicionadosNoTextArea, listDoTempoDeTrabalho, listDeStringsDasSomasDiasEntreDuasDatas);
+            limparCalculos();
         }
     }
 
@@ -326,6 +327,13 @@ public class Calculadora extends JFrame implements ActionListener {
             --ordemDosPeriodos;
         }
 
+    }
+
+    public void limparCalculos(){
+        tempoDeTrabalho = Period.parse("P0Y0M0D");
+        periodoDeTrabalho = Period.parse("P0Y0M0D");
+        somaDiasEntreDuasDatas = 0;
+        ordemDosPeriodos = 0;
     }
 
     public static void main(String[] args) {

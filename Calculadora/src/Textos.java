@@ -6,6 +6,7 @@ import java.time.Period;
 import java.util.ArrayList;
 
 public class Textos   {
+
     protected static void limpar(JTextField nomeIndividuo, JTextArea area, JFormattedTextField dataInicial, JFormattedTextField dataFinal){
 
         nomeIndividuo.setText("");
@@ -114,8 +115,13 @@ public class Textos   {
         }
     }
 
-    protected static void limparAreaCalculos(JTextArea areaCalculos){
+    protected static void limparAreaCalculos(JTextArea areaCalculos, ArrayList <String> listDosTextosQueSeraoAdicionadosNoTextArea, ArrayList <Period> listDoTempoDeTrabalho , ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas){
+
+        listDosTextosQueSeraoAdicionadosNoTextArea.clear();
+        listDoTempoDeTrabalho.clear();
+        listDeStringsDasSomasDiasEntreDuasDatas.clear();
         areaCalculos.setText("");
+
     }
 
     protected static void desfazerTextos(JTextArea areaCalculos, ArrayList <String> listDosTextosQueSeraoAdicionadosNoTextArea){
