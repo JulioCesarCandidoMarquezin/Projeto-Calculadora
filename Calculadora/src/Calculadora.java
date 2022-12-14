@@ -33,10 +33,7 @@ public class Calculadora extends JFrame implements ActionListener {
     Period tempoDeTrabalho = Period.parse("P0Y0M0D");
     Period periodoDeTrabalho;
 
-    DateTimeFormatter formatoDosLocalDates = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    LocalDate localDataInicial, localDataFinal, localDataFinalSomadoComTempoDeTrabalho;
-
-    long somaDiasEntreDuasDatas = 0, diasEntreDuasDatas = 0;
+    long somaDiasEntreDuasDatas = 0;
     int ordemDosPeriodos = 0;
 
     String textoQueSeraAdicionadoNoTextArea;
@@ -88,21 +85,21 @@ public class Calculadora extends JFrame implements ActionListener {
             dataFinal.setToolTipText("Data final de um periodo.");
             dataFinal.setFont(fonte);
 
-            calcular.setBounds(2, 200, 80, 30);
+            calcular.setBounds(2, 195, 80, 40);
             calcular.addActionListener(this);
 
-            desfazer.setBounds(82, 200, 80, 30);
+            desfazer.setBounds(82, 195, 80, 40);
             desfazer.addActionListener(this);
             desfazer.addMouseListener(getMouseEvent());
             desfazer.getCursor();
 
-            limpar.setBounds(162, 200, 80, 30);
+            limpar.setBounds(162, 195, 80, 40);
             limpar.addActionListener(this);
             limpar.addMouseListener(getMouseEvent());
             limpar.getCursor();
             limpar.setToolTipText("Limpa as caixas de data, caixa de texto e area de anotações.");
 
-            novo.setBounds(242, 200, 80, 30);
+            novo.setBounds(242, 195, 80, 40);
             novo.addActionListener(this);
             novo.setToolTipText("Cria uma nova guia.");
 
@@ -127,19 +124,19 @@ public class Calculadora extends JFrame implements ActionListener {
             areaCalculos.setBackground(objetos);
             areaCalculos.setFont(fonte);
 
-            scrollDoAreaCalculos.setBounds(330, 0, 325, 410);
+            scrollDoAreaCalculos.setBounds(330, 0, 325, 400);
             scrollDoAreaCalculos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-            calcularAreaCalculos.setBounds(330, 410, 80, 30);
+            calcularAreaCalculos.setBounds(330, 400, 80, 40);
             calcularAreaCalculos.addActionListener(this);
 
-            salvar.setBounds(415, 410, 70, 30);
+            salvar.setBounds(415, 400, 70, 40);
             salvar.addActionListener(this);
 
-            imprimir.setBounds(490,410,80,30);
+            imprimir.setBounds(490,400,80,40);
             imprimir.addActionListener(this);
 
-            limparAreaCalculos.setBounds(575, 410, 80, 30);
+            limparAreaCalculos.setBounds(575, 400, 80, 40);
             limparAreaCalculos.addMouseListener(getMouseEvent());
             limparAreaCalculos.addActionListener(this);
 
@@ -282,13 +279,15 @@ public class Calculadora extends JFrame implements ActionListener {
 
     protected void CalculaTempo(JTextArea areaCalculos, JTextField dataInicial, JTextField dataFinal){
 
-        localDataInicial = LocalDate.parse(dataInicial.getText(), formatoDosLocalDates);
-        localDataFinal = LocalDate.parse(dataFinal.getText(), formatoDosLocalDates);
-        localDataFinalSomadoComTempoDeTrabalho = localDataFinal.plus(tempoDeTrabalho);
+        DateTimeFormatter formatoDosLocalDates = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        LocalDate localDataInicial = LocalDate.parse(dataInicial.getText(), formatoDosLocalDates);
+        LocalDate localDataFinal = LocalDate.parse(dataFinal.getText(), formatoDosLocalDates);
+        LocalDate localDataFinalSomadoComTempoDeTrabalho = localDataFinal.plus(tempoDeTrabalho);
 
         periodoDeTrabalho = Period.between(localDataInicial, localDataFinal);
 
-        diasEntreDuasDatas = ChronoUnit.DAYS.between(localDataInicial, localDataFinal);
+        long diasEntreDuasDatas = ChronoUnit.DAYS.between(localDataInicial, localDataFinal);
 
         tempoDeTrabalho = Period.between(localDataInicial, localDataFinalSomadoComTempoDeTrabalho);
         tempoDeTrabalho = tempoDeTrabalho.normalized();
