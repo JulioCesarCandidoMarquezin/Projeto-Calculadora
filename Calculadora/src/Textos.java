@@ -26,8 +26,10 @@ public class Textos   {
     }
 
     protected static void MostraCalculoFinal(JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas){
-        areaCalculos.append("Tempo total de trabalho: " + tempoDeTrabalho.getYears() + " Anos " + tempoDeTrabalho.getMonths() + " Meses e " + tempoDeTrabalho.getDays() + " Dias"
-                + "\n" + "Tempo total em Dias: " + somaDiasEntreDuasDatas + "\n\n");
+        if(!tempoDeTrabalho.isZero() && somaDiasEntreDuasDatas != 0){
+            areaCalculos.append("Tempo total de trabalho: " + tempoDeTrabalho.getYears() + " Anos " + tempoDeTrabalho.getMonths() + " Meses e " + tempoDeTrabalho.getDays() + " Dias"
+                    + "\n" + "Tempo total em Dias: " + somaDiasEntreDuasDatas + "\n\n");
+        }
     }
 
     protected static void salvarCalculos(JTextField nomeIndividuo, JTextArea areaCalculos){
