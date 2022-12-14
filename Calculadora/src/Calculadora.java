@@ -12,9 +12,7 @@ import java.util.ArrayList;
 
 public class Calculadora extends JFrame implements ActionListener {
 
-    Color objetos = new Color(198, 235, 255,255);
-
-    JPanel painel = new JPanel();
+    // Arrumar interface //
 
     JFormattedTextField dataInicial, dataFinal;
 
@@ -31,9 +29,6 @@ public class Calculadora extends JFrame implements ActionListener {
 
     JTextArea area = new JTextArea("");
     JTextArea areaCalculos = new JTextArea("");
-
-    JScrollPane scroll = new JScrollPane(areaCalculos);
-    JScrollPane scroll1 = new JScrollPane(area);
 
     Period tempoDeTrabalho = Period.parse("P0Y0M0D");
     Period periodoDeTrabalho;
@@ -55,10 +50,16 @@ public class Calculadora extends JFrame implements ActionListener {
 
         try{
 
-            painel.setSize(700, 550);
-            painel.setLayout(null);
-            painel.setBackground(new Color(19,114,218,255));
-            add(painel);
+            Color objetos = new Color(198, 235, 255,255);
+            ImageIcon seduc = new ImageIcon("seduc.png");
+            JLabel imagemSeduc = new JLabel(seduc);
+            setIconImage(Toolkit.getDefaultToolkit().getImage("rondonia.png"));
+            Font fonte = new Font("Arial", Font.PLAIN, 12);
+            JScrollPane scrollDoAreaCalculos = new JScrollPane(areaCalculos);
+            JScrollPane scrollDasAnotacoes = new JScrollPane(area);
+
+            getContentPane().setBackground(new Color(19,114,218,255));
+            imagemSeduc.setBounds(0,0,325,70);
 
             dataInicial = new JFormattedTextField(new MaskFormatter("##/##/####"));
             dataFinal = new JFormattedTextField(new MaskFormatter("##/##/####"));
@@ -66,40 +67,42 @@ public class Calculadora extends JFrame implements ActionListener {
             TitledBorder titulo_Nome_Individuo = BorderFactory.createTitledBorder( "Nome");
             titulo_Nome_Individuo.setTitleJustification(TitledBorder.CENTER);
             nomeIndividuo.setBorder(titulo_Nome_Individuo);
-            nomeIndividuo.setBounds(10, 70, 325, 55);
-            nomeIndividuo.setFont(new Font("Arial", Font.PLAIN, 12));
+            nomeIndividuo.setBounds(0, 70, 325, 55);
             nomeIndividuo.setBackground(objetos);
             nomeIndividuo.setToolTipText("Nome da pessoa ao qual está lidando, serve para se organizar caso esteja lidando com multiplas pessoas ao mesmo tempo.");
+            nomeIndividuo.setFont(fonte);
 
             TitledBorder titulo_Data_Inicial = BorderFactory.createTitledBorder("Data Inicial");
             titulo_Data_Inicial.setTitleJustification(TitledBorder.CENTER);
             dataInicial.setBorder(titulo_Data_Inicial);
-            dataInicial.setBounds(10, 130, 160, 55);
+            dataInicial.setBounds(0, 130, 160, 55);
             dataInicial.setBackground(objetos);
             dataInicial.setToolTipText("Data inicial de um periodo.");
+            dataInicial.setFont(fonte);
 
             TitledBorder titulo_Data_Final = BorderFactory.createTitledBorder("Data Final");
             titulo_Data_Final.setTitleJustification(TitledBorder.CENTER);
             dataFinal.setBorder(titulo_Data_Final);
-            dataFinal.setBounds(175, 130, 160, 55);
+            dataFinal.setBounds(165, 130, 160, 55);
             dataFinal.setBackground(objetos);
             dataFinal.setToolTipText("Data final de um periodo.");
+            dataFinal.setFont(fonte);
 
-            calcular.setBounds(12, 200, 80, 30);
+            calcular.setBounds(2, 200, 80, 30);
             calcular.addActionListener(this);
 
-            desfazer.setBounds(92, 200, 80, 30);
+            desfazer.setBounds(82, 200, 80, 30);
             desfazer.addActionListener(this);
             desfazer.addMouseListener(getMouseEvent());
             desfazer.getCursor();
 
-            limpar.setBounds(172, 200, 80, 30);
+            limpar.setBounds(162, 200, 80, 30);
             limpar.addActionListener(this);
             limpar.addMouseListener(getMouseEvent());
             limpar.getCursor();
             limpar.setToolTipText("Limpa as caixas de data, caixa de texto e area de anotações.");
 
-            novo.setBounds(252, 200, 80, 30);
+            novo.setBounds(242, 200, 80, 30);
             novo.addActionListener(this);
             novo.setToolTipText("Cria uma nova guia.");
 
@@ -108,11 +111,11 @@ public class Calculadora extends JFrame implements ActionListener {
             area.setBorder(titulo_Area);
             area.setLineWrap(true);
             area.setWrapStyleWord(true);
-            area.setFont(new Font("Arial", Font.PLAIN, 12));
             area.setBackground(objetos);
+            area.setFont(fonte);
 
-            scroll1.setBounds(10, 240, 325, 200);
-            scroll1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollDasAnotacoes.setBounds(0, 240, 325, 200);
+            scrollDasAnotacoes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
             TitledBorder titulo_Area_Calculos = BorderFactory.createTitledBorder("Calculos");
             titulo_Area_Calculos.setTitleJustification(TitledBorder.CENTER);
@@ -120,42 +123,43 @@ public class Calculadora extends JFrame implements ActionListener {
             areaCalculos.setLineWrap(true);
             areaCalculos.setWrapStyleWord(true);
             areaCalculos.setEditable(false);
-            areaCalculos.setFont(new Font("Arial", Font.PLAIN, 12));
             areaCalculos.setText("");
             areaCalculos.setBackground(objetos);
+            areaCalculos.setFont(fonte);
 
-            scroll.setBounds(350, 70, 325, 330);
-            scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollDoAreaCalculos.setBounds(330, 0, 325, 410);
+            scrollDoAreaCalculos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-            calcularAreaCalculos.setBounds(350, 410, 80, 30);
+            calcularAreaCalculos.setBounds(330, 410, 80, 30);
             calcularAreaCalculos.addActionListener(this);
 
-            salvar.setBounds(435, 410, 70, 30);
+            salvar.setBounds(415, 410, 70, 30);
             salvar.addActionListener(this);
 
-            imprimir.setBounds(510,410,80,30);
+            imprimir.setBounds(490,410,80,30);
             imprimir.addActionListener(this);
 
-            limparAreaCalculos.setBounds(595, 410, 80, 30);
+            limparAreaCalculos.setBounds(575, 410, 80, 30);
             limparAreaCalculos.addMouseListener(getMouseEvent());
             limparAreaCalculos.addActionListener(this);
 
-            painel.add(nomeIndividuo);
-            painel.add(dataInicial);
-            painel.add(dataFinal);
-            painel.add(calcular);
-            painel.add(desfazer);
-            painel.add(limpar);
-            painel.add(novo);
-            painel.add(scroll1);
-            painel.add(scroll);
-            painel.add(calcularAreaCalculos);
-            painel.add(salvar);
-            painel.add(imprimir);
-            painel.add(limparAreaCalculos);
+            add(imagemSeduc);
+            add(nomeIndividuo);
+            add(dataInicial);
+            add(dataFinal);
+            add(calcular);
+            add(desfazer);
+            add(limpar);
+            add(novo);
+            add(scrollDasAnotacoes);
+            add(scrollDoAreaCalculos);
+            add(calcularAreaCalculos);
+            add(salvar);
+            add(imprimir);
+            add(limparAreaCalculos);
 
             setTitle("Tempo de Contribuição");
-            setSize(700, 490);
+            setSize(675, 480);
             setLayout(null);
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             setLocationRelativeTo(null);
