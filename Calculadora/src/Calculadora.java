@@ -14,7 +14,7 @@ public class Calculadora extends JFrame implements ActionListener {
 
     JFormattedTextField dataInicial, dataFinal;
 
-    JTextField nomeIndividuo = new JTextField("");
+    JTextField nomeIndividuo = new JTextField("Nome da pessoa");
 
     JButton calcular = new JButton("Calcular");
     JButton desfazer = new JButton("Desfazer");
@@ -25,7 +25,7 @@ public class Calculadora extends JFrame implements ActionListener {
     JButton imprimir = new JButton("Imprimir");
     JButton limparAreaCalculos = new JButton("Limpar");
 
-    JTextArea areaAnotacoes = new JTextArea("");
+    JTextArea areaAnotacoes = new JTextArea("Anotações");
     JTextArea areaCalculos = new JTextArea("");
 
     Period tempoDeTrabalho = Period.parse("P0Y0M0D");
@@ -60,6 +60,21 @@ public class Calculadora extends JFrame implements ActionListener {
             JLabel imagemSeduc = new JLabel(seduc);
             imagemSeduc.setBounds(0,0,325,70);
 
+            JScrollPane scrollDoAreaCalculos = new JScrollPane(areaCalculos);
+            JScrollPane scrollDasAnotacoes = new JScrollPane(areaAnotacoes);
+
+            dataInicial = new JFormattedTextField(new MaskFormatter("##/##/####"));
+            dataInicial.setBorder(bordas);
+            dataInicial.setBounds(80, 130, 80, 40);
+            dataInicial.setToolTipText("Data inicial de um periodo.");
+            dataInicial.setFont(fonte);
+
+            dataFinal = new JFormattedTextField(new MaskFormatter("##/##/####"));
+            dataFinal.setBorder(bordas);
+            dataFinal.setBounds(80,175,80,40);
+            dataFinal.setToolTipText("Data final de um periodo.");
+            dataFinal.setFont(fonte);
+
             JLabel labelNomeDoIndividuo = new JLabel("Nome", JLabel.CENTER);
             JLabel labelDataInicial = new JLabel("Data Inicial", JLabel.CENTER);
             JLabel labelDataFinal = new JLabel("Data Final", JLabel.CENTER);
@@ -71,26 +86,11 @@ public class Calculadora extends JFrame implements ActionListener {
             labelDataFinal.setBounds(0, 175, 80, 40);
             labelDataFinal.setFont(fonte);
 
-            JScrollPane scrollDoAreaCalculos = new JScrollPane(areaCalculos);
-            JScrollPane scrollDasAnotacoes = new JScrollPane(areaAnotacoes);
-
-            dataInicial = new JFormattedTextField(new MaskFormatter("##/##/####"));
-            dataFinal = new JFormattedTextField(new MaskFormatter("##/##/####"));
-
             nomeIndividuo.setBorder(bordas);
             nomeIndividuo.setBounds(0, 70, 325, 40);
             nomeIndividuo.setToolTipText("Nome da pessoa ao qual está lidando, serve para se organizar caso esteja lidando com multiplas pessoas ao mesmo tempo.");
             nomeIndividuo.setFont(fonte);
-
-            dataInicial.setBorder(bordas);
-            dataInicial.setBounds(80, 130, 80, 40);
-            dataInicial.setToolTipText("Data inicial de um periodo.");
-            dataInicial.setFont(fonte);
-            dataFinal.setBorder(bordas);
-            dataFinal.setBounds(80,175,80,40);
-
-            dataFinal.setToolTipText("Data final de um periodo.");
-            dataFinal.setFont(fonte);
+            nomeIndividuo.addMouseListener(getMouseEvent());
 
             calcular.setBounds(165,130,80,40);
             calcular.addActionListener(this);
@@ -119,6 +119,7 @@ public class Calculadora extends JFrame implements ActionListener {
             areaAnotacoes.setLineWrap(true);
             areaAnotacoes.setWrapStyleWord(true);
             areaAnotacoes.setFont(fonte);
+            areaAnotacoes.addMouseListener(getMouseEvent());
 
             scrollDasAnotacoes.setBounds(0, 240, 325, 200);
             scrollDasAnotacoes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -268,6 +269,14 @@ public class Calculadora extends JFrame implements ActionListener {
             @Override
             public void mouseEntered(MouseEvent e) {
 
+                if(e.getSource() == nomeIndividuo && nomeIndividuo.getText().equals("Nome da pessoa")){
+                    nomeIndividuo.setText("");
+                }
+
+                if(e.getSource() == areaAnotacoes && areaAnotacoes.getText().equals("Anotações")){
+                    areaAnotacoes.setText("");
+                }
+
                 if(e.getSource() == limpar){
                     limpar.setText("Certeza?");
                 }
@@ -285,6 +294,14 @@ public class Calculadora extends JFrame implements ActionListener {
             @Override
             public void mouseExited(MouseEvent e) {
 
+                if(e.getSource() == nomeIndividuo && nomeIndividuo.getText().equals("")){
+                    nomeIndividuo.setText("Nome da pessoa");
+                }
+
+                if(e.getSource() == areaAnotacoes && areaAnotacoes.getText().equals("")){
+                    areaAnotacoes.setText("Anotações");
+                }
+
                 if(e.getSource() == limpar){
                     limpar.setText("Limpar");
                 }
@@ -298,7 +315,6 @@ public class Calculadora extends JFrame implements ActionListener {
                 }
 
             }
-
         };
     }
 
