@@ -236,6 +236,7 @@ public class Calculadora extends JFrame implements ActionListener {
     private boolean datasSaoInvalidas(){
 
         try {
+
             String textoDataInicial = dataInicial.getText();
             String textoDataFinal = dataFinal.getText();
 
@@ -310,29 +311,35 @@ public class Calculadora extends JFrame implements ActionListener {
         LocalDate localDataFinalSomadoComTempoDeTrabalho = localDataFinal.plus(tempoDeTrabalho);
 
         periodoDeTrabalho = Period.between(localDataInicial, localDataFinal);
+        boolean periodoNegativo = periodoDeTrabalho.isNegative();
 
-        long diasEntreDuasDatas = ChronoUnit.DAYS.between(localDataInicial, localDataFinal);
+        if(periodoNegativo == true){
+            areaCalculos.append("A data inicial é maior que a data final \n\n");
+        }
+        else{
+            long diasEntreDuasDatas = ChronoUnit.DAYS.between(localDataInicial, localDataFinal);
 
-        tempoDeTrabalho = Period.between(localDataInicial, localDataFinalSomadoComTempoDeTrabalho);
-        tempoDeTrabalho = tempoDeTrabalho.normalized();
-        listDoTempoDeTrabalho.add(tempoDeTrabalho);
+            tempoDeTrabalho = Period.between(localDataInicial, localDataFinalSomadoComTempoDeTrabalho);
+            tempoDeTrabalho = tempoDeTrabalho.normalized();
+            listDoTempoDeTrabalho.add(tempoDeTrabalho);
 
-        somaDiasEntreDuasDatas = somaDiasEntreDuasDatas + diasEntreDuasDatas;
-        listDeStringsDasSomasDiasEntreDuasDatas.add(String.valueOf(somaDiasEntreDuasDatas));
+            somaDiasEntreDuasDatas = somaDiasEntreDuasDatas + diasEntreDuasDatas;
+            listDeStringsDasSomasDiasEntreDuasDatas.add(String.valueOf(somaDiasEntreDuasDatas));
 
-        ++ordemDosPeriodos;
+            ++ordemDosPeriodos;
 
-        textoQueSeraAdicionadoNoTextArea = ordemDosPeriodos + "° Periodo" +
-                "\n" + "De " + localDataInicial.getDayOfMonth() + "/" + localDataInicial.getMonthValue()+ "/" + localDataInicial.getYear() + " até " +
-                localDataFinal.getDayOfMonth() + "/" + localDataFinal.getMonthValue() + "/" + localDataFinal.getYear() +
-                "\n" + "Duração: " +periodoDeTrabalho.getYears() + " Anos " +  periodoDeTrabalho.getMonths() + " Meses " + periodoDeTrabalho.getDays() + " e Dias" +
-                "\n" + "Duração em Dias: " + diasEntreDuasDatas + "\n \n";
+            textoQueSeraAdicionadoNoTextArea = ordemDosPeriodos + "° Periodo" +
+                    "\n" + "De " + localDataInicial.getDayOfMonth() + "/" + localDataInicial.getMonthValue()+ "/" + localDataInicial.getYear() + " até " +
+                    localDataFinal.getDayOfMonth() + "/" + localDataFinal.getMonthValue() + "/" + localDataFinal.getYear() +
+                    "\n" + "Duração: " +periodoDeTrabalho.getYears() + " Anos " +  periodoDeTrabalho.getMonths() + " Meses " + periodoDeTrabalho.getDays() + " e Dias" +
+                    "\n" + "Duração em Dias: " + diasEntreDuasDatas + "\n \n";
 
-        listDosTextosQueSeraoAdicionadosNoTextArea.add(textoQueSeraAdicionadoNoTextArea);
+            listDosTextosQueSeraoAdicionadosNoTextArea.add(textoQueSeraAdicionadoNoTextArea);
 
-        areaCalculos.append(textoQueSeraAdicionadoNoTextArea);
-        Textos.limpar(this.dataInicial, this.dataFinal);
+            areaCalculos.append(textoQueSeraAdicionadoNoTextArea);
+            Textos.limpar(this.dataInicial, this.dataFinal);
 
+        }
     }
 
     private void desfazerCalculos(ArrayList <Period> listDoTempoDeTrabalho, ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas){

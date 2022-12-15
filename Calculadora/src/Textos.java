@@ -34,18 +34,31 @@ public class Textos   {
         }
     }
 
-    protected static void removerCalculosFinais(JTextArea areaCalculos, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
+    protected static void removerTextosInuteis(JTextArea areaCalculos, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
         while(listDosTextosDoMostrarCalculoFinal.size() > 0){
             String textoQueSeraTiradoDoTextArea = listDosTextosDoMostrarCalculoFinal.remove(listDosTextosDoMostrarCalculoFinal.size() - 1);
             String novoTextoDoTextArea = areaCalculos.getText().replace(textoQueSeraTiradoDoTextArea, "");
             areaCalculos.setText(novoTextoDoTextArea);
         }
+        String textoDeDataInvalida;
+        String novoTextoDoTextArea;
+        textoDeDataInvalida = "A data inicial é inválida! \n\n";
+        novoTextoDoTextArea = areaCalculos.getText().replace(textoDeDataInvalida, "");
+        areaCalculos.setText(novoTextoDoTextArea);
+
+        textoDeDataInvalida = "A data final é inválida! \n\n";
+        novoTextoDoTextArea = areaCalculos.getText().replace(textoDeDataInvalida, "");
+        areaCalculos.setText(novoTextoDoTextArea);
+
+        textoDeDataInvalida = "A data inicial é maior que a data final \n\n";
+        novoTextoDoTextArea = areaCalculos.getText().replace(textoDeDataInvalida, "");
+        areaCalculos.setText(novoTextoDoTextArea);
     }
 
     protected static void salvarCalculos(JTextField nomeIndividuo, JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
 
         try {
-            removerCalculosFinais(areaCalculos, listDosTextosDoMostrarCalculoFinal);
+            removerTextosInuteis(areaCalculos, listDosTextosDoMostrarCalculoFinal);
             MostraCalculoFinal(areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
 
             File arquivoQueSeraSalvo;
@@ -77,7 +90,7 @@ public class Textos   {
     protected static void imprimirCalculos(JTextField nomeIndividuo, JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
         try {
 
-            removerCalculosFinais(areaCalculos, listDosTextosDoMostrarCalculoFinal);
+            removerTextosInuteis(areaCalculos, listDosTextosDoMostrarCalculoFinal);
             MostraCalculoFinal(areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
 
             // O documento temporário é criado//
