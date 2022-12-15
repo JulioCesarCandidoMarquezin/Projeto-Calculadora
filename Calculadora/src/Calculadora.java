@@ -48,12 +48,13 @@ public class Calculadora extends JFrame implements ActionListener {
         try{
 
             Color corDeFundo = new Color(19,114,218,255);
-            setIconImage(Toolkit.getDefaultToolkit().getImage("rondonia.png"));
-            Font fonte = new Font("Arial", Font.PLAIN, 12);
-            getContentPane().setBackground(corDeFundo);
-
             Color objetos = new Color(198, 235, 255,255);
+            Font fonte = new Font("Arial", Font.PLAIN, 12);
             LineBorder bordas = (LineBorder) BorderFactory.createLineBorder(objetos, 5, true);
+
+            setIconImage(Toolkit.getDefaultToolkit().getImage("rondonia.png"));
+
+            getContentPane().setBackground(corDeFundo);
 
             ImageIcon seduc = new ImageIcon("seduc.png");
             JLabel imagemSeduc = new JLabel(seduc);
@@ -66,7 +67,9 @@ public class Calculadora extends JFrame implements ActionListener {
             JLabel labelAreaCalculos = new JLabel("Calculos", JLabel.CENTER);
 
             labelDataInicial.setBounds(0,130,80,40);
+            labelDataInicial.setFont(fonte);
             labelDataFinal.setBounds(0, 175, 80, 40);
+            labelDataFinal.setFont(fonte);
 
             JScrollPane scrollDoAreaCalculos = new JScrollPane(areaCalculos);
             JScrollPane scrollDasAnotacoes = new JScrollPane(areaAnotacoes);
@@ -83,7 +86,6 @@ public class Calculadora extends JFrame implements ActionListener {
             dataInicial.setBounds(80, 130, 80, 40);
             dataInicial.setToolTipText("Data inicial de um periodo.");
             dataInicial.setFont(fonte);
-
             dataFinal.setBorder(bordas);
             dataFinal.setBounds(80,175,80,40);
 
