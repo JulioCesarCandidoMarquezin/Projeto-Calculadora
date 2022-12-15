@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public class Calculadora extends JFrame implements ActionListener {
 
-    // Arrumar interface //
-
     JFormattedTextField dataInicial, dataFinal;
 
     JTextField nomeIndividuo = new JTextField("");
@@ -27,7 +25,7 @@ public class Calculadora extends JFrame implements ActionListener {
     JButton imprimir = new JButton("Imprimir");
     JButton limparAreaCalculos = new JButton("Limpar");
 
-    JTextArea area = new JTextArea("");
+    JTextArea areaAnotacoes = new JTextArea("");
     JTextArea areaCalculos = new JTextArea("");
 
     Period tempoDeTrabalho = Period.parse("P0Y0M0D");
@@ -49,18 +47,29 @@ public class Calculadora extends JFrame implements ActionListener {
 
         try{
 
+            Color corDeFundo = new Color(19,114,218,255);
+            setIconImage(Toolkit.getDefaultToolkit().getImage("rondonia.png"));
+            Font fonte = new Font("Arial", Font.PLAIN, 12);
+            getContentPane().setBackground(corDeFundo);
+
             Color objetos = new Color(198, 235, 255,255);
-            LineBorder bordas = (LineBorder) BorderFactory.createLineBorder(objetos, 5, false);
+            LineBorder bordas = (LineBorder) BorderFactory.createLineBorder(objetos, 5, true);
 
             ImageIcon seduc = new ImageIcon("seduc.png");
             JLabel imagemSeduc = new JLabel(seduc);
-            setIconImage(Toolkit.getDefaultToolkit().getImage("rondonia.png"));
-            Font fonte = new Font("Arial", Font.PLAIN, 12);
-            JScrollPane scrollDoAreaCalculos = new JScrollPane(areaCalculos);
-            JScrollPane scrollDasAnotacoes = new JScrollPane(area);
-
-            getContentPane().setBackground(new Color(19,114,218,255));
             imagemSeduc.setBounds(0,0,325,70);
+
+            JLabel labelNomeDoIndividuo = new JLabel("Nome", JLabel.CENTER);
+            JLabel labelDataInicial = new JLabel("Data Inicial", JLabel.CENTER);
+            JLabel labelDataFinal = new JLabel("Data Final", JLabel.CENTER);
+            JLabel labelAreaAnotacoes = new JLabel("Anotações", JLabel.CENTER);
+            JLabel labelAreaCalculos = new JLabel("Calculos", JLabel.CENTER);
+
+            labelDataInicial.setBounds(0,130,80,40);
+            labelDataFinal.setBounds(0, 175, 80, 40);
+
+            JScrollPane scrollDoAreaCalculos = new JScrollPane(areaCalculos);
+            JScrollPane scrollDasAnotacoes = new JScrollPane(areaAnotacoes);
 
             dataInicial = new JFormattedTextField(new MaskFormatter("##/##/####"));
             dataFinal = new JFormattedTextField(new MaskFormatter("##/##/####"));
@@ -71,37 +80,43 @@ public class Calculadora extends JFrame implements ActionListener {
             nomeIndividuo.setFont(fonte);
 
             dataInicial.setBorder(bordas);
-            dataInicial.setBounds(0, 130, 160, 40);
+            dataInicial.setBounds(80, 130, 80, 40);
             dataInicial.setToolTipText("Data inicial de um periodo.");
             dataInicial.setFont(fonte);
 
             dataFinal.setBorder(bordas);
-            dataFinal.setBounds(165, 130, 160, 40);
+            dataFinal.setBounds(80,175,80,40);
 
             dataFinal.setToolTipText("Data final de um periodo.");
             dataFinal.setFont(fonte);
 
-            calcular.setBounds(0, 195, 80, 40);
+            calcular.setBounds(165,130,80,40);
             calcular.addActionListener(this);
+            calcular.setToolTipText("Calcula o periodo entre as datas especificadas");
+            calcular.setBackground(Color.WHITE);
 
-            desfazer.setBounds(80, 195, 80, 40);
+            desfazer.setBounds(245, 130, 80, 40);
             desfazer.addActionListener(this);
             desfazer.addMouseListener(getMouseEvent());
+            desfazer.setToolTipText("Desfaz o ultimo cálculo realizado");
             desfazer.getCursor();
+            desfazer.setBackground(Color.WHITE);
 
-            limpar.setBounds(160, 195, 80, 40);
+            limpar.setBounds(165, 175, 80, 40);
             limpar.addActionListener(this);
             limpar.addMouseListener(getMouseEvent());
             limpar.getCursor();
             limpar.setToolTipText("Limpa as caixas de data, caixa de texto e area de anotações.");
+            limpar.setBackground(Color.WHITE);
 
-            novo.setBounds(242, 195, 80, 40);
+            novo.setBounds(245, 175, 80, 40);
             novo.addActionListener(this);
-            novo.setToolTipText("Cria uma nova guia.");
+            novo.setToolTipText("Cria uma nova janela.");
+            novo.setBackground(Color.WHITE);
 
-            area.setLineWrap(true);
-            area.setWrapStyleWord(true);
-            area.setFont(fonte);
+            areaAnotacoes.setLineWrap(true);
+            areaAnotacoes.setWrapStyleWord(true);
+            areaAnotacoes.setFont(fonte);
 
             scrollDasAnotacoes.setBounds(0, 240, 325, 200);
             scrollDasAnotacoes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -116,34 +131,51 @@ public class Calculadora extends JFrame implements ActionListener {
             scrollDoAreaCalculos.setBounds(330, 0, 325, 400);
             scrollDoAreaCalculos.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
             scrollDoAreaCalculos.setBorder(bordas);
+            scrollDoAreaCalculos.add(labelAreaCalculos);
 
-            calcularAreaCalculos.setBounds(330, 400, 80, 40);
             calcularAreaCalculos.addActionListener(this);
+            calcularAreaCalculos.setToolTipText("Mostra o tempo total considerando todos os calculos realizados");
+            calcularAreaCalculos.setBackground(Color.WHITE);
 
-            salvar.setBounds(415, 400, 70, 40);
             salvar.addActionListener(this);
+            salvar.setToolTipText("Salva o texto dos calculos em um arquivo na pasta especificada");
+            salvar.setBackground(Color.WHITE);
 
-            imprimir.setBounds(490,400,80,40);
-            imprimir.addActionListener(this);
+            imprimir.setToolTipText("Imprime ");
+            imprimir.setBackground(Color.WHITE);
 
-            limparAreaCalculos.setBounds(575, 400, 80, 40);
             limparAreaCalculos.addMouseListener(getMouseEvent());
             limparAreaCalculos.addActionListener(this);
 
+            JPanel painelDaAreaPrincipal = new JPanel(new GridLayout(2,4,5,5));
+            painelDaAreaPrincipal.setBounds(0,130,325,80);
+            painelDaAreaPrincipal.setBackground(corDeFundo);
+            painelDaAreaPrincipal.add(labelDataInicial);
+            painelDaAreaPrincipal.add(dataInicial);
+            painelDaAreaPrincipal.add(calcular);
+            painelDaAreaPrincipal.add(desfazer);
+            painelDaAreaPrincipal.add(labelDataFinal);
+            painelDaAreaPrincipal.add(dataFinal);
+            painelDaAreaPrincipal.add(limpar);
+            painelDaAreaPrincipal.add(novo);
+
+            JPanel painelDosBotoes = new JPanel(new GridLayout(1,4,5,5));
+            painelDosBotoes.setBackground(corDeFundo);
+            painelDosBotoes.setBounds(330,400,325,40);
+            painelDosBotoes.add(calcularAreaCalculos);
+            painelDosBotoes.add(salvar);
+            painelDosBotoes.add(imprimir);
+            painelDosBotoes.add(limparAreaCalculos);
+
+            add(painelDaAreaPrincipal);
+            add(painelDosBotoes);
             add(imagemSeduc);
+            add(labelNomeDoIndividuo);
+            add(labelAreaAnotacoes);
+            add(labelAreaCalculos);
             add(nomeIndividuo);
-            add(dataInicial);
-            add(dataFinal);
-            add(calcular);
-            add(desfazer);
-            add(limpar);
-            add(novo);
             add(scrollDasAnotacoes);
             add(scrollDoAreaCalculos);
-            add(calcularAreaCalculos);
-            add(salvar);
-            add(imprimir);
-            add(limparAreaCalculos);
 
             setTitle("Tempo de Contribuição");
             setSize(675, 480);
@@ -176,7 +208,7 @@ public class Calculadora extends JFrame implements ActionListener {
         }
 
         if(e.getSource() == limpar){
-            Textos.limpar(nomeIndividuo, area, dataInicial, dataFinal);
+            Textos.limpar(nomeIndividuo, areaAnotacoes, dataInicial, dataFinal);
         }
 
         if(e.getSource() == novo){
