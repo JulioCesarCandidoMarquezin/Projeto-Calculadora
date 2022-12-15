@@ -71,7 +71,6 @@ public class Calculadora extends JFrame implements ActionListener {
 
             dataFinal = new JFormattedTextField(new MaskFormatter("##/##/####"));
             dataFinal.setBorder(bordas);
-            dataFinal.setBounds(80,175,80,40);
             dataFinal.setToolTipText("Data final de um periodo.");
             dataFinal.setFont(fonte);
 
@@ -81,9 +80,7 @@ public class Calculadora extends JFrame implements ActionListener {
             JLabel labelAreaAnotacoes = new JLabel("Anotações", JLabel.CENTER);
             JLabel labelAreaCalculos = new JLabel("Calculos", JLabel.CENTER);
 
-            labelDataInicial.setBounds(0,130,80,40);
             labelDataInicial.setFont(fonte);
-            labelDataFinal.setBounds(0, 175, 80, 40);
             labelDataFinal.setFont(fonte);
 
             nomeIndividuo.setBorder(bordas);
@@ -92,26 +89,22 @@ public class Calculadora extends JFrame implements ActionListener {
             nomeIndividuo.setFont(fonte);
             nomeIndividuo.addMouseListener(getMouseEvent());
 
-            calcular.setBounds(165,130,80,40);
             calcular.addActionListener(this);
             calcular.setToolTipText("Calcula o periodo entre as datas especificadas");
             calcular.setBackground(Color.WHITE);
 
-            desfazer.setBounds(245, 130, 80, 40);
             desfazer.addActionListener(this);
             desfazer.addMouseListener(getMouseEvent());
             desfazer.setToolTipText("Desfaz o ultimo cálculo realizado");
             desfazer.getCursor();
             desfazer.setBackground(Color.WHITE);
 
-            limpar.setBounds(165, 175, 80, 40);
             limpar.addActionListener(this);
             limpar.addMouseListener(getMouseEvent());
             limpar.getCursor();
             limpar.setToolTipText("Limpa as caixas de data, caixa de texto e area de anotações.");
             limpar.setBackground(Color.WHITE);
 
-            novo.setBounds(245, 175, 80, 40);
             novo.addActionListener(this);
             novo.setToolTipText("Cria uma nova janela.");
             novo.setBackground(Color.WHITE);
@@ -121,7 +114,7 @@ public class Calculadora extends JFrame implements ActionListener {
             areaAnotacoes.setFont(fonte);
             areaAnotacoes.addMouseListener(getMouseEvent());
 
-            scrollDasAnotacoes.setBounds(0, 240, 325, 200);
+            scrollDasAnotacoes.setBounds(0, 210, 325, 230);
             scrollDasAnotacoes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
             scrollDasAnotacoes.setBorder(bordas);
 
@@ -149,9 +142,10 @@ public class Calculadora extends JFrame implements ActionListener {
 
             limparAreaCalculos.addMouseListener(getMouseEvent());
             limparAreaCalculos.addActionListener(this);
+            limparAreaCalculos.setBackground(Color.WHITE);
 
             JPanel painelDaAreaPrincipal = new JPanel(new GridLayout(2,4,5,5));
-            painelDaAreaPrincipal.setBounds(0,130,325,80);
+            painelDaAreaPrincipal.setBounds(0,120,325,80);
             painelDaAreaPrincipal.setBackground(corDeFundo);
             painelDaAreaPrincipal.add(labelDataInicial);
             painelDaAreaPrincipal.add(dataInicial);
