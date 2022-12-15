@@ -138,6 +138,7 @@ public class Calculadora extends JFrame implements ActionListener {
             salvar.setBackground(Color.WHITE);
 
             imprimir.setToolTipText("Imprime ");
+            imprimir.addActionListener(this);
             imprimir.setBackground(Color.WHITE);
 
             limparAreaCalculos.addMouseListener(getMouseEvent());
