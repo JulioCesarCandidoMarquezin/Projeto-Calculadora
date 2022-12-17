@@ -349,7 +349,6 @@ public class Calculadora extends JFrame implements ActionListener {
 
             areaCalculos.append(textoQueSeraAdicionadoNoTextArea);
             Textos.limpar(this.dataInicial, this.dataFinal);
-
         }
     }
 
