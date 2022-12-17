@@ -340,8 +340,7 @@ public class Calculadora extends JFrame implements ActionListener {
             ++ordemDosPeriodos;
 
             textoQueSeraAdicionadoNoTextArea = ordemDosPeriodos + "° Periodo" +
-                    "\n" + "De " + localDataInicial.getDayOfMonth() + "/" + localDataInicial.getMonthValue()+ "/" + localDataInicial.getYear() + " até " +
-                    localDataFinal.getDayOfMonth() + "/" + localDataFinal.getMonthValue() + "/" + localDataFinal.getYear() +
+                    "\n" + "De " + localDataInicial.format(formatoDosLocalDates) + " até " + localDataFinal.format(formatoDosLocalDates) +
                     "\n" + "Duração: " +periodoDeTrabalho.getYears() + " Anos " +  periodoDeTrabalho.getMonths() + " Meses " + periodoDeTrabalho.getDays() + " e Dias" +
                     "\n" + "Duração em Dias: " + diasEntreDuasDatas + "\n \n";
 
