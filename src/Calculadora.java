@@ -18,11 +18,9 @@ public class Calculadora extends JFrame implements ActionListener {
 
     JButton calcular = new JButton("Calcular");
     JButton desfazer = new JButton("Desfazer");
-    JButton limpar = new JButton("Limpar");
     JButton novo = new JButton("Novo");
     JButton calcularAreaCalculos = new JButton("Calcular");
     JButton salvar = new JButton("Salvar");
-    JButton imprimir = new JButton("Imprimir");
     JButton limparAreaCalculos = new JButton("Limpar");
 
     JTextArea areaAnotacoes = new JTextArea("Anotações");
@@ -38,7 +36,7 @@ public class Calculadora extends JFrame implements ActionListener {
 
     ArrayList <Period> listDoTempoDeTrabalho = new ArrayList<>();
     ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas = new ArrayList<>();
-    ArrayList <String> listDosTextosQueSeraoAdicionadosNoTextArea = new ArrayList<>();
+    ArrayList <String> listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular = new ArrayList<>();
     ArrayList <String> listDosTextosDoMostrarCalculoFinal = new ArrayList<>();
 
     protected Calculadora (){
@@ -50,7 +48,7 @@ public class Calculadora extends JFrame implements ActionListener {
             Color corDeFundo = new Color(19,114,218,255);
             Color objetos = new Color(198, 235, 255,255);
             Font fonte = new Font("Arial", Font.PLAIN, 12);
-            LineBorder bordas = (LineBorder) BorderFactory.createLineBorder(objetos, 5, true);
+            LineBorder bordas = (LineBorder) BorderFactory.createLineBorder(objetos, 5);
 
             setIconImage(Toolkit.getDefaultToolkit().getImage("rondonia.png"));
 
@@ -80,8 +78,11 @@ public class Calculadora extends JFrame implements ActionListener {
             JLabel labelAreaAnotacoes = new JLabel("Anotações", JLabel.CENTER);
             JLabel labelAreaCalculos = new JLabel("Calculos", JLabel.CENTER);
 
-            labelDataInicial.setFont(fonte);
-            labelDataFinal.setFont(fonte);
+            labelDataInicial.setFont(new Font("Arial",Font.PLAIN, 16));
+            labelDataInicial.setForeground(objetos);
+
+            labelDataFinal.setFont(new Font("Arial",Font.PLAIN, 16));
+            labelDataFinal.setForeground(objetos);
 
             nomeIndividuo.setBorder(bordas);
             nomeIndividuo.setBounds(0, 70, 325, 40);
@@ -98,12 +99,6 @@ public class Calculadora extends JFrame implements ActionListener {
             desfazer.setToolTipText("Desfaz o ultimo cálculo realizado");
             desfazer.getCursor();
             desfazer.setBackground(Color.WHITE);
-
-            limpar.addActionListener(this);
-            limpar.addMouseListener(getMouseEvent());
-            limpar.getCursor();
-            limpar.setToolTipText("Limpa as caixas de data, caixa de texto e area de anotações.");
-            limpar.setBackground(Color.WHITE);
 
             novo.addActionListener(this);
             novo.setToolTipText("Cria uma nova janela.");
@@ -137,33 +132,27 @@ public class Calculadora extends JFrame implements ActionListener {
             salvar.setToolTipText("Salva o texto dos calculos em um arquivo na pasta especificada");
             salvar.setBackground(Color.WHITE);
 
-            imprimir.setToolTipText("Imprime ");
-            imprimir.addActionListener(this);
-            imprimir.setBackground(Color.WHITE);
-
             limparAreaCalculos.addMouseListener(getMouseEvent());
             limparAreaCalculos.addActionListener(this);
             limparAreaCalculos.setBackground(Color.WHITE);
 
-            JPanel painelDaAreaPrincipal = new JPanel(new GridLayout(2,4,5,5));
+            JPanel painelDaAreaPrincipal = new JPanel(new GridLayout(2,3,5,5));
             painelDaAreaPrincipal.setBounds(0,120,325,80);
             painelDaAreaPrincipal.setBackground(corDeFundo);
             painelDaAreaPrincipal.add(labelDataInicial);
             painelDaAreaPrincipal.add(dataInicial);
             painelDaAreaPrincipal.add(calcular);
-            painelDaAreaPrincipal.add(desfazer);
             painelDaAreaPrincipal.add(labelDataFinal);
             painelDaAreaPrincipal.add(dataFinal);
-            painelDaAreaPrincipal.add(limpar);
-            painelDaAreaPrincipal.add(novo);
+            painelDaAreaPrincipal.add(desfazer);
 
             JPanel painelDosBotoes = new JPanel(new GridLayout(1,4,5,5));
             painelDosBotoes.setBackground(corDeFundo);
             painelDosBotoes.setBounds(330,400,325,40);
             painelDosBotoes.add(calcularAreaCalculos);
             painelDosBotoes.add(salvar);
-            painelDosBotoes.add(imprimir);
             painelDosBotoes.add(limparAreaCalculos);
+            painelDosBotoes.add(novo);
 
             add(painelDaAreaPrincipal);
             add(painelDosBotoes);
@@ -195,18 +184,14 @@ public class Calculadora extends JFrame implements ActionListener {
 
             boolean datasSaoInvalidas = datasSaoInvalidas();
             if (!datasSaoInvalidas) {
-                CalculaTempo(areaCalculos, dataInicial, dataFinal);
+                CalculaTempo();
             }
 
         }
 
         if(e.getSource() == desfazer){
-            desfazerCalculos( listDoTempoDeTrabalho, listDeStringsDasSomasDiasEntreDuasDatas);
-            Textos.desfazerTextos(areaCalculos, listDosTextosQueSeraoAdicionadosNoTextArea);
-        }
-
-        if(e.getSource() == limpar){
-            Textos.limpar(nomeIndividuo, areaAnotacoes, dataInicial, dataFinal);
+            desfazerCalculos();
+            Textos.desfazerTextos(areaCalculos, listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular);
         }
 
         if(e.getSource() == novo){
@@ -219,12 +204,8 @@ public class Calculadora extends JFrame implements ActionListener {
 
         if(e.getSource() == salvar) Textos.salvarCalculos(nomeIndividuo, areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
 
-        if(e.getSource() == imprimir){
-            Textos.imprimirCalculos(nomeIndividuo, areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
-        }
-
         if(e.getSource() == limparAreaCalculos){
-            Textos.limparAreaCalculos(areaCalculos, listDosTextosQueSeraoAdicionadosNoTextArea, listDoTempoDeTrabalho, listDeStringsDasSomasDiasEntreDuasDatas);
+            Textos.limparTudo(nomeIndividuo, areaAnotacoes, dataInicial, dataFinal, areaCalculos, listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular, listDoTempoDeTrabalho, listDeStringsDasSomasDiasEntreDuasDatas);
             limparCalculos();
         }
     }
@@ -272,10 +253,6 @@ public class Calculadora extends JFrame implements ActionListener {
                     areaAnotacoes.setText("");
                 }
 
-                if(e.getSource() == limpar){
-                    limpar.setText("Certeza?");
-                }
-
                 if(e.getSource() == desfazer){
                     desfazer.setText("Certeza?");
                 }
@@ -297,10 +274,6 @@ public class Calculadora extends JFrame implements ActionListener {
                     areaAnotacoes.setText("Anotações");
                 }
 
-                if(e.getSource() == limpar){
-                    limpar.setText("Limpar");
-                }
-
                 if(e.getSource() == desfazer){
                     desfazer.setText("Desfazer");
                 }
@@ -313,7 +286,7 @@ public class Calculadora extends JFrame implements ActionListener {
         };
     }
 
-    protected void CalculaTempo(JTextArea areaCalculos, JTextField dataInicial, JTextField dataFinal){
+    protected void CalculaTempo(){
 
         DateTimeFormatter formatoDosLocalDates = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -344,41 +317,43 @@ public class Calculadora extends JFrame implements ActionListener {
                     "\n" + "Duração: " +periodoDeTrabalho.getYears() + " Anos " +  periodoDeTrabalho.getMonths() + " Meses " + periodoDeTrabalho.getDays() + " e Dias" +
                     "\n" + "Duração em Dias: " + diasEntreDuasDatas + "\n \n";
 
-            listDosTextosQueSeraoAdicionadosNoTextArea.add(textoQueSeraAdicionadoNoTextArea);
+            listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular.add(textoQueSeraAdicionadoNoTextArea);
 
             areaCalculos.append(textoQueSeraAdicionadoNoTextArea);
-            Textos.limpar(this.dataInicial, this.dataFinal);
+            Textos.limparDatas(this.dataInicial, this.dataFinal);
         }
     }
 
-    private void desfazerCalculos(ArrayList <Period> listDoTempoDeTrabalho, ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas){
+    private void desfazerCalculos(){
 
-        int ultimaPosicaoDasLists = listDeStringsDasSomasDiasEntreDuasDatas.size() - 1;
+        if(listDeStringsDasSomasDiasEntreDuasDatas.size() > 1){
 
-        if(listDeStringsDasSomasDiasEntreDuasDatas.size() > 0){
-            if(ultimaPosicaoDasLists > 0){
-                somaDiasEntreDuasDatas = Long.parseLong(listDeStringsDasSomasDiasEntreDuasDatas.get(ultimaPosicaoDasLists));
-            }
-            else{
-                somaDiasEntreDuasDatas = 0;
-            }
-            listDeStringsDasSomasDiasEntreDuasDatas.remove(ultimaPosicaoDasLists);
+            somaDiasEntreDuasDatas = Long.parseLong(listDeStringsDasSomasDiasEntreDuasDatas.get(listDeStringsDasSomasDiasEntreDuasDatas.size() - 2));
+            listDeStringsDasSomasDiasEntreDuasDatas.remove(listDeStringsDasSomasDiasEntreDuasDatas.size() - 1);
+        }
+        else{
+            somaDiasEntreDuasDatas = 0;
         }
 
-        if(listDoTempoDeTrabalho.size() > 0){
-            if(ultimaPosicaoDasLists > 0){
-                tempoDeTrabalho = listDoTempoDeTrabalho.get(ultimaPosicaoDasLists);
-            }
-            else{
-                tempoDeTrabalho = Period.parse("P0Y0M0D");
-            }
-            listDoTempoDeTrabalho.remove(ultimaPosicaoDasLists);
+        if(listDoTempoDeTrabalho.size() > 1){
+
+            tempoDeTrabalho = listDoTempoDeTrabalho.get(listDoTempoDeTrabalho.size() - 2);
+            listDoTempoDeTrabalho.remove(listDoTempoDeTrabalho.size() - 1);
+        }
+        else{
+            tempoDeTrabalho = Period.parse("P0Y0M0D");
         }
 
         if(ordemDosPeriodos > 0){
             --ordemDosPeriodos;
         }
 
+        if(listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular.size() > 0) {
+            String textoQueSeraTiradoDoTextArea = listDosTextosDoMostrarCalculoFinal.get(listDosTextosDoMostrarCalculoFinal.size() - 1);
+            String novoTextoDoTextArea = areaCalculos.getText().replace(textoQueSeraTiradoDoTextArea, "");
+            areaCalculos.setText(novoTextoDoTextArea);
+            listDosTextosDoMostrarCalculoFinal.remove(textoQueSeraTiradoDoTextArea);
+        }
     }
 
     private void limparCalculos(){
