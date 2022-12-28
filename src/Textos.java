@@ -1,4 +1,7 @@
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import java.io.*;
 import java.time.Period;
 import java.util.ArrayList;
@@ -25,6 +28,7 @@ public class Textos   {
     }
 
     protected static void MostraCalculoFinal(JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
+
         if(!tempoDeTrabalho.isZero() && somaDiasEntreDuasDatas != 0){
             String textoQueSeraAdicionadoNoTextArea = "Tempo total de trabalho: " + tempoDeTrabalho.getYears() + " Anos " + tempoDeTrabalho.getMonths() + " Meses e " + tempoDeTrabalho.getDays() + " Dias"
                     + "\n" + "Tempo total em Dias: " + somaDiasEntreDuasDatas + "\n\n";
@@ -41,19 +45,17 @@ public class Textos   {
             areaCalculos.setText(novoTextoDoTextArea);
             listDosTextosDoMostrarCalculoFinal.remove(textoQueSeraTiradoDoTextArea);
         }
+
         String textoDeDataInvalida;
         String novoTextoDoTextArea;
-        textoDeDataInvalida = "A data inicial é inválida! \n\n";
-        novoTextoDoTextArea = areaCalculos.getText().replace(textoDeDataInvalida, "");
-        areaCalculos.setText(novoTextoDoTextArea);
-
-        textoDeDataInvalida = "A data final é inválida! \n\n";
+        textoDeDataInvalida = "Data Inválida\n\n";
         novoTextoDoTextArea = areaCalculos.getText().replace(textoDeDataInvalida, "");
         areaCalculos.setText(novoTextoDoTextArea);
 
         textoDeDataInvalida = "A data inicial é maior que a data final \n\n";
         novoTextoDoTextArea = areaCalculos.getText().replace(textoDeDataInvalida, "");
         areaCalculos.setText(novoTextoDoTextArea);
+
     }
 
     protected static void salvarCalculos(JTextField nomeIndividuo, JTextArea areaCalculos, Period tempoDeTrabalho, long somaDiasEntreDuasDatas, ArrayList <String> listDosTextosDoMostrarCalculoFinal){
@@ -74,6 +76,7 @@ public class Textos   {
             escolhedorDoArquivoQueSeraSalvo.setSelectedFile(arquivoQueSeraSalvo);
 
             int opcaoEscolhidaParaSerSalva = escolhedorDoArquivoQueSeraSalvo.showDialog(null, "Salvar");
+
             if(opcaoEscolhidaParaSerSalva == 0){
                 arquivoQueSeraSalvo = new File("" +  escolhedorDoArquivoQueSeraSalvo.getSelectedFile() );
                 RandomAccessFile raf = new RandomAccessFile(arquivoQueSeraSalvo, "rw");
