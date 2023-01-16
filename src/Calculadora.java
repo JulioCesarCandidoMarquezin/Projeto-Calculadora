@@ -13,29 +13,22 @@ import java.util.ArrayList;
 public class Calculadora extends JFrame implements ActionListener {
 
     JFormattedTextField dataInicial, dataFinal;
-
     JTextField nomeIndividuo = new JTextField("Nome da pessoa");
-
     JButton calcular = new JButton("Calcular");
     JButton desfazer = new JButton("Desfazer");
     JButton novo = new JButton("Novo");
     JButton calcularAreaCalculos = new JButton("Calcular");
     JButton salvar = new JButton("Salvar");
     JButton limparAreaCalculos = new JButton("Limpar");
-
     JTextArea areaAnotacoes = new JTextArea("Anotações");
     JTextArea areaCalculos = new JTextArea("");
-
     Period tempoDeTrabalho = Period.parse("P0Y0M0D");
     Period periodoDeTrabalho;
-
     long somaDiasEntreDuasDatas = 0;
     int ordemDosPeriodos = 0;
-
     String textoQueSeraAdicionadoNoTextArea;
-
     ArrayList <Period> listDoTempoDeTrabalho = new ArrayList<>();
-    ArrayList <String> listDeStringsDasSomasDiasEntreDuasDatas = new ArrayList<>();
+    ArrayList <Long> listDasSomasDiasEntreDuasDatas = new ArrayList<>();
     ArrayList <String> listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular = new ArrayList<>();
     ArrayList <String> listDosTextosDoMostrarCalculoFinal = new ArrayList<>();
 
@@ -179,9 +172,7 @@ public class Calculadora extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
-
         if(e.getSource() == calcular){
-
             try{
                 CalculaTempo();
             }
@@ -189,24 +180,19 @@ public class Calculadora extends JFrame implements ActionListener {
                 areaCalculos.append("Data Inválida\n\n");
             }
         }
-
         if(e.getSource() == desfazer){
             desfazerCalculos();
             Textos.desfazerTextos(areaCalculos, listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular);
         }
-
         if(e.getSource() == novo){
             new Calculadora();
         }
-
         if(e.getSource() == calcularAreaCalculos){
             Textos.MostraCalculoFinal(areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
         }
-
         if(e.getSource() == salvar) Textos.salvarCalculos(nomeIndividuo, areaCalculos, tempoDeTrabalho, somaDiasEntreDuasDatas, listDosTextosDoMostrarCalculoFinal);
-
         if(e.getSource() == limparAreaCalculos){
-            Textos.limparTudo(nomeIndividuo, areaAnotacoes, dataInicial, dataFinal, areaCalculos, listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular, listDoTempoDeTrabalho, listDeStringsDasSomasDiasEntreDuasDatas);
+            Textos.limparTudo(nomeIndividuo, areaAnotacoes, dataInicial, dataFinal, areaCalculos, listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular, listDoTempoDeTrabalho, listDasSomasDiasEntreDuasDatas);
             limparCalculos();
         }
     }
@@ -216,110 +202,77 @@ public class Calculadora extends JFrame implements ActionListener {
         return new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-
                 if(e.getSource() == nomeIndividuo && nomeIndividuo.getText().equals("Nome da pessoa")){
                     nomeIndividuo.setText("");
                 }
-
                 if(e.getSource() == areaAnotacoes && areaAnotacoes.getText().equals("Anotações")){
                     areaAnotacoes.setText("");
                 }
-
                 if(e.getSource() == desfazer){
                     desfazer.setText("Certeza?");
                 }
-
                 if(e.getSource() == limparAreaCalculos){
                     limparAreaCalculos.setText("Certeza?");
                 }
-
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-
-                if(e.getSource() == nomeIndividuo && nomeIndividuo.getText().equals("")){
-                    nomeIndividuo.setText("Nome da pessoa");
-                }
-
-                if(e.getSource() == areaAnotacoes && areaAnotacoes.getText().equals("")){
-                    areaAnotacoes.setText("Anotações");
-                }
-
                 if(e.getSource() == desfazer){
                     desfazer.setText("Desfazer");
                 }
-
                 if(e.getSource() == limparAreaCalculos){
                     limparAreaCalculos.setText("Limpar");
                 }
-
             }
         };
     }
 
     protected void CalculaTempo(){
-
         DateTimeFormatter formatoDosLocalDates = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
         LocalDate localDataInicial = LocalDate.parse(dataInicial.getText(), formatoDosLocalDates);
         LocalDate localDataFinal = LocalDate.parse(dataFinal.getText(), formatoDosLocalDates);
         LocalDate localDataFinalSomadoComTempoDeTrabalho = localDataFinal.plus(tempoDeTrabalho);
-
         periodoDeTrabalho = Period.between(localDataInicial, localDataFinal);
-        boolean periodoNegativo = periodoDeTrabalho.isNegative();
-
-        if(periodoNegativo){
+        if(periodoDeTrabalho.isNegative()){
             areaCalculos.append("A data inicial é maior que a data final \n\n");
         }
         else{
             long diasEntreDuasDatas = ChronoUnit.DAYS.between(localDataInicial, localDataFinal);
-
             tempoDeTrabalho = Period.between(localDataInicial, localDataFinalSomadoComTempoDeTrabalho);
             tempoDeTrabalho = tempoDeTrabalho.normalized();
             listDoTempoDeTrabalho.add(tempoDeTrabalho);
-
             somaDiasEntreDuasDatas = somaDiasEntreDuasDatas + diasEntreDuasDatas;
-            listDeStringsDasSomasDiasEntreDuasDatas.add(String.valueOf(somaDiasEntreDuasDatas));
-
+            listDasSomasDiasEntreDuasDatas.add(somaDiasEntreDuasDatas);
             ++ordemDosPeriodos;
-
             textoQueSeraAdicionadoNoTextArea = ordemDosPeriodos + "° Periodo" +
                     "\n" + "De " + localDataInicial.format(formatoDosLocalDates) + " até " + localDataFinal.format(formatoDosLocalDates) +
                     "\n" + "Duração: " +periodoDeTrabalho.getYears() + " Anos " +  periodoDeTrabalho.getMonths() + " Meses " + periodoDeTrabalho.getDays() + " e Dias" +
                     "\n" + "Duração em Dias: " + diasEntreDuasDatas + "\n \n";
-
             listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular.add(textoQueSeraAdicionadoNoTextArea);
-
             areaCalculos.append(textoQueSeraAdicionadoNoTextArea);
             Textos.limparDatas(this.dataInicial, this.dataFinal);
         }
     }
 
     private void desfazerCalculos(){
-
-        if(listDeStringsDasSomasDiasEntreDuasDatas.size() > 1){
-
-            somaDiasEntreDuasDatas = Long.parseLong(listDeStringsDasSomasDiasEntreDuasDatas.get(listDeStringsDasSomasDiasEntreDuasDatas.size() - 2));
-            listDeStringsDasSomasDiasEntreDuasDatas.remove(listDeStringsDasSomasDiasEntreDuasDatas.size() - 1);
+        if(listDasSomasDiasEntreDuasDatas.size() > 1){
+            somaDiasEntreDuasDatas = listDasSomasDiasEntreDuasDatas.get(listDasSomasDiasEntreDuasDatas.size() - 2);
+            listDasSomasDiasEntreDuasDatas.remove(listDasSomasDiasEntreDuasDatas.size() - 1);
         }
         else{
             somaDiasEntreDuasDatas = 0;
         }
-
         if(listDoTempoDeTrabalho.size() > 1){
-
             tempoDeTrabalho = listDoTempoDeTrabalho.get(listDoTempoDeTrabalho.size() - 2);
             listDoTempoDeTrabalho.remove(listDoTempoDeTrabalho.size() - 1);
         }
         else{
             tempoDeTrabalho = Period.parse("P0Y0M0D");
         }
-
         if(ordemDosPeriodos > 0){
             --ordemDosPeriodos;
         }
-
         if(listDosTextosQueSeraoAdicionadosNoTextAreaPeloCalcular.size() > 0) {
             String textoQueSeraTiradoDoTextArea = listDosTextosDoMostrarCalculoFinal.get(listDosTextosDoMostrarCalculoFinal.size() - 1);
             String novoTextoDoTextArea = areaCalculos.getText().replace(textoQueSeraTiradoDoTextArea, "");
@@ -336,7 +289,6 @@ public class Calculadora extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -348,7 +300,6 @@ public class Calculadora extends JFrame implements ActionListener {
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex1) {
             java.util.logging.Logger.getLogger(Calculadora.class.getName()).log(java.util.logging.Level.SEVERE, null, ex1);
         }
-
         new Calculadora();
     }
 }
