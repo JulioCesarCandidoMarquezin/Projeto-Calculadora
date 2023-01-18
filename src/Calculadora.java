@@ -198,7 +198,6 @@ public class Calculadora extends JFrame implements ActionListener {
     }
 
     private MouseAdapter getMouseEvent() {
-
         return new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -215,7 +214,6 @@ public class Calculadora extends JFrame implements ActionListener {
                     limparAreaCalculos.setText("Certeza?");
                 }
             }
-
             @Override
             public void mouseExited(MouseEvent e) {
                 if(e.getSource() == desfazer){
