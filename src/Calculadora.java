@@ -34,8 +34,6 @@ public class Calculadora extends JFrame implements ActionListener {
 
     protected Calculadora (){
 
-        // Terminar as bordas //
-
         try{
 
             Color corDeFundo = new Color(19,114,218,255);
