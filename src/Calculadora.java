@@ -1,8 +1,14 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -41,12 +47,17 @@ public class Calculadora extends JFrame implements ActionListener {
             Font fonte = new Font("Arial", Font.PLAIN, 12);
             LineBorder bordas = (LineBorder) BorderFactory.createLineBorder(objetos, 5);
 
-            setIconImage(Toolkit.getDefaultToolkit().getImage("rondonia.png"));
+            InputStream iconStream = getClass().getResourceAsStream("/rondonia.png");
+            Image icone = ImageIO.read(iconStream);
+            setIconImage(icone);
+            iconStream.close();
 
             getContentPane().setBackground(corDeFundo);
 
-            ImageIcon seduc = new ImageIcon("seduc.png");
+            InputStream imageStream = getClass().getResourceAsStream("/seduc.png");
+            ImageIcon seduc = new ImageIcon(ImageIO.read(imageStream));
             JLabel imagemSeduc = new JLabel(seduc);
+            imageStream.close();
             imagemSeduc.setBounds(0,0,325,70);
 
             JScrollPane scrollDoAreaCalculos = new JScrollPane(areaCalculos);
@@ -165,6 +176,12 @@ public class Calculadora extends JFrame implements ActionListener {
         }
         catch(ParseException e){
             JOptionPane.showMessageDialog(null, e);
+        }
+        catch (NullPointerException npe){
+            JOptionPane.showMessageDialog(null, "Não foi possivel localizar as imagens");
+            System.exit(1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
